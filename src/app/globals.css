@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+:root {
+  --background: #01095E;
+  --foreground: #eef2ff;
+  --background-black: #000318;
+  --button-blue: #0085FF;
+  --button-blue-hover: #0066CC;
+  --button-secondary: transparent;
+  --button-secondary-hover: #001B82;
+  --background-navy: #0B1639;
+  --background-card: #0D1B3E;
+  --border-card: rgba(99, 149, 255, 0.25);
+  --border-card-hover: rgba(99, 149, 255, 0.5);
+  --shadow-card-hover: rgba(99, 149, 255, 0.15);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-background-black-default: var(--background-black);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --color-button-default: var(--button-blue);
+  --color-button-default-hover: var(--button-blue-hover);
+  --color-button-transparent: var(--button-secondary);
+  --color-button-transparent-hover: var(--button-secondary-hover);
+  --color-background-navy: var(--background-navy);
+  --color-background-card: var(--background-card);
+  --color-border-card: var(--border-card);
+  --color-border-card-hover: var(--border-card-hover);
+  --color-shadow-card-hover: var(--shadow-card-hover);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #01095E;
+    --foreground: #eef2ff;
+    --background-black-default: #000318;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: linear-gradient(.25turn, var(--background-black-default), var(--background), var(--background-black-default));
+  min-height: 100dvh;
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
