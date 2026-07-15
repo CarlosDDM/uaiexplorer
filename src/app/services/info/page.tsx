@@ -3,7 +3,7 @@ import { GenericSection } from '@/components/GenericSection';
 
 export default function InfoPage() {
   return (
-    <Container className='px-8'>
+    <Container as='main' className='px-8'>
       <div className='min-h-dvh mt-20 flex flex-col gap-12 pb-20'>
         <GenericSection
           className='scroll-mt-20'
@@ -17,7 +17,8 @@ export default function InfoPage() {
         />
 
         <p className='text-indigo-200 leading-relaxed'>
-          Não se trata apenas de "fazer um site bonito", mas de projetar um
+          Não se trata apenas de &ldquo;fazer um site bonito&rdquo;, mas de
+          projetar um
           ambiente digital que traduza os valores da empresa e guie o visitante
           de forma intuitiva. É a combinação de psicologia das cores, tipografia
           e layout para criar uma interface atraente e eficiente.

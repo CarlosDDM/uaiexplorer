@@ -9,7 +9,8 @@ export const metadata: Metadata = {
     default: 'UAIExplorer',
     template: '%s | UAIExplorer',
   },
-  description: '...',
+  description:
+    'UAIExplorer — desenvolvimento de landing pages, e-commerces e plataformas web sob medida, com design focado em conversão e SEO.',
 };
 
 type RootLayoutProps = {

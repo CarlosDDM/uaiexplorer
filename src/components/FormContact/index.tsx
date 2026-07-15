@@ -31,7 +31,7 @@ export function FormContact() {
   useEffect(() => {
     if (state.success) {
       toastMessage.dismiss();
-      toastMessage.success('Menssagem enviada com successo');
+      toastMessage.success('Mensagem enviada com sucesso');
     }
   }, [state.success]);
 
@@ -40,7 +40,7 @@ export function FormContact() {
       <form
         action={action}
         className={clsx(
-          'flex flex-col px-4 py-2 gap-4 items-center justify-center',
+          'flex flex-col py-2 gap-4 items-center justify-center',
           'max-w-md md:max-w-2xl mx-auto w-full',
           '[&>div]:w-full',
         )}
@@ -77,7 +77,9 @@ export function FormContact() {
           required
         />
 
-        <Button type='submit'>Enviar</Button>
+        <Button type='submit' disabled={isPending} aria-busy={isPending}>
+          {isPending ? 'Enviando...' : 'Enviar'}
+        </Button>
       </form>
     </div>
   );

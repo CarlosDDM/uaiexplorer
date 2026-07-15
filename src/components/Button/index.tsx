@@ -19,7 +19,9 @@ export function Button({
     default: clsx(
       'bg-button-default',
       'text-indigo-50',
+      'shadow-lg shadow-button-default/30',
       'hover:bg-button-default-hover',
+      'hover:shadow-xl hover:shadow-button-default/40',
     ),
     transparent: clsx(
       'bg-button-transparent',
@@ -72,7 +74,11 @@ export function Button({
     'inline-flex',
     'items-center',
     'justify-center',
-    'transition',
+    'font-medium',
+    'transition duration-300 ease-out',
+    'hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]',
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-button-default/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    'disabled:pointer-events-none disabled:opacity-50',
     'max-w-75',
     props.className,
   );

@@ -7,23 +7,23 @@ const basePath = '/services/info';
 export const servicesCards: CardListModel[] = [
   {
     title: 'Desenvolvimento',
-    buttonDescription: 'Saiba mais sobre desenvolvimento',
+    buttonDescription: 'Saiba mais',
     href: `${basePath}#desenvolvimento`,
-    content: `É o processo de transformar ideias em aplicativos, sites ou sistemas que facilitam o nosso dia a dia. É a ponte entre um problema do mundo real e uma solução digital inteligente.`,
+    content: `Sites e sistemas construídos do zero pro seu negócio — rápidos, estáveis e sem template genérico. A ponte entre um problema real e uma solução que continua funcionando quando você crescer.`,
     icon: IoCodeSlashOutline,
   },
   {
     title: 'Design de websites',
-    buttonDescription: 'Saiba mais sobre design de websites',
+    buttonDescription: 'Saiba mais',
     href: `${basePath}#design-de-websites`,
-    content: `É o aperto de mão digital entre uma empresa e seus clientes. É a construção de um espaço que transmite confiança e profissionalismo, garantindo que a primeira impressão no mundo online seja o reflexo fiel da qualidade do negócio.`,
+    content: `Sua primeira impressão no mundo online, feita pra transmitir confiança em segundos. Um espaço que reflete a qualidade do seu negócio antes mesmo do cliente ler uma linha.`,
     icon: IoGlobeOutline,
   },
   {
     title: 'SEO',
-    buttonDescription: 'Saiba mais sobre SEO',
+    buttonDescription: 'Saiba mais',
     href: `${basePath}#seo`,
-    content: `É o conjunto de estratégias que torna sua empresa visível para quem procura uma solução. É o caminho que guia o cliente certo através do mar de informações da internet até a porta da sua vitrine digital.`,
+    content: `Aparecer pra quem já está procurando o que você oferece. As estratégias que colocam sua empresa no caminho do cliente certo — no momento em que ele decide comprar.`,
     icon: HiOutlineMagnifyingGlass,
   },
 ];

@@ -6,7 +6,7 @@ export function FormContactHeader() {
       <div className='bg-blue-600 p-3 rounded-full'>
         <IoMdMail className='text-white w-6 h-6' aria-hidden='true' />
       </div>
-      <h2 className='text-2xl font-bold text-indigo-50'>Entre em contato</h2>
+      <h3 className='text-2xl font-bold text-indigo-50'>Entre em contato</h3>
       <p className='text-indigo-300 text-sm text-center'>
         Preencha o formulário abaixo e respondemos em até 24h.
       </p>

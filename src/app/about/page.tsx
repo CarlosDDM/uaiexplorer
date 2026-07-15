@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <Container>
+    <Container as='main'>
       <div className='min-h-dvh flex flex-col justify-center items-center mt-20'>
         <About />
         <div className='my-8'>

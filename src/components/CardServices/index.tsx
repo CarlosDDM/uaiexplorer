@@ -1,8 +1,7 @@
 import clsx from 'clsx';
-import { Container } from '../Container';
 import { GenericSection } from '../GenericSection';
 import { LinkButton } from '../Link';
-import { IconType } from 'react-icons';
+import type { IconType } from 'react-icons';
 
 type CardServicesProps = {
   title: string;
@@ -12,52 +11,65 @@ type CardServicesProps = {
   icon: IconType;
 };
 
+function CardIcon({ icon: Icon }: { icon: IconType }) {
+  return (
+    <div
+      className={clsx(
+        '[&>svg]:h-6 [&>svg]:w-6 md:[&>svg]:h-8 md:[&>svg]:w-8',
+        'text-button-default',
+        'rounded-full border border-solid border-border-card p-3',
+        'bg-linear-to-br from-background-navy to-background-card',
+        'shadow-md shadow-border-card',
+        'transition duration-300 ease-out',
+        'group-hover:scale-105',
+        'group-hover:border-border-card-hover group-hover:shadow-shadow-card-hover',
+      )}
+    >
+      <Icon />
+    </div>
+  );
+}
+
 export function CardServices({
   buttonDescription,
   content,
   href,
-  icon: Icon,
+  icon,
   title,
 }: CardServicesProps) {
   return (
-    <Container>
-      <div
+    <article
+      className={clsx(
+        'group select-none',
+        'flex min-h-85 w-full max-w-80 flex-col items-start gap-4 p-6',
+        'rounded-xl border border-solid border-border-card',
+        'bg-background-card shadow-md shadow-border-card backdrop-blur-sm',
+        'hover:-translate-y-1',
+        'hover:border-border-card-hover hover:shadow-lg hover:shadow-shadow-card-hover',
+        'transition duration-300 ease-out',
+      )}
+    >
+      <CardIcon icon={icon} />
+
+      <GenericSection
+        title={title}
+        content={content}
+        titleAs='h3'
         className={clsx(
-          'flex flex-col justify-center items-center',
-          'border border-border-card border-solid rounded',
-          'shadow-md shadow-border-card',
-          'bg-background-card backdrop-blur-sm',
-          'px-2 py-4',
-          'max-w-80 md:min-w-80 min-h-85',
-          'hover:border-border-card-hover hover:shadow-lg hover:shadow-shadow-card-hover',
-          'transition-all',
-          'select-none',
+          'w-full text-left',
+          '[&_h3]:transition-colors [&_h3]:duration-300',
+          'group-hover:[&_h3]:text-button-default',
         )}
+      />
+
+      <LinkButton
+        variant='default'
+        href={href}
+        aria-label={`Saiba mais sobre ${title}`}
+        className='mt-auto w-full'
       >
-        <div
-          className={clsx(
-            'self-start',
-            '[&>svg]:w-6 [&>svg]:h-6',
-            'md:[&>svg]:w-8 md:[&>svg]:h-8',
-            'border p-3 rounded-full',
-            'border-border-card border-solid',
-            'shadow-md shadow-border-card',
-            'bg-background-card',
-          )}
-        >
-          <Icon />
-        </div>
-        <GenericSection
-          title={title}
-          content={content}
-          titleAs='h3'
-          className='text-left'
-        >
-          <LinkButton variant='default' href={href}>
-            {buttonDescription}
-          </LinkButton>
-        </GenericSection>
-      </div>
-    </Container>
+        {buttonDescription}
+      </LinkButton>
+    </article>
   );
 }
