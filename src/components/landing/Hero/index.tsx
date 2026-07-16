@@ -59,7 +59,7 @@ function HeroActions() {
 export function Hero() {
   return (
     <Container>
-      <div className='relative flex min-h-dvh w-full flex-col items-center justify-center'>
+      <div className='relative flex min-h-svh w-full flex-col items-center justify-center'>
         <HeroBackground />
 
         <GenericSection

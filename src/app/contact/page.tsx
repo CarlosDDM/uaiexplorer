@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <Container as='main'>
-      <div className='flex min-h-dvh flex-col items-center justify-center gap-8 pt-24 pb-8 md:pt-24'>
+      <div className='flex min-h-svh flex-col items-center justify-center gap-8 pt-24 pb-8 md:pt-24'>
         <Contact />
         <SocialMedias />
       </div>

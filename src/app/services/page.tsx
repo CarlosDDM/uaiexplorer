@@ -43,7 +43,7 @@ function ServicesGrid() {
 
 export default function ServicesPage() {
   return (
-    <main className='mx-auto min-h-dvh w-full max-w-6xl px-4 pt-32 pb-20'>
+    <main className='mx-auto min-h-svh w-full max-w-6xl px-4 pt-32 pb-20'>
       <ServicesHeader />
       <ServicesGrid />
     </main>

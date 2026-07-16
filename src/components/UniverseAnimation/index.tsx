@@ -16,7 +16,15 @@ export function UniverseAnimation({ children }: UniverseAnimationProps) {
     const starfield = createStarfield(canvas);
     starfield.start();
 
-    const handleResize = () => starfield.resize();
+    // no mobile, rolar mostra/esconde a barra de endereço e dispara "resize"
+    // só de altura — só recriamos o starfield quando a largura muda de fato.
+    let lastWidth = canvas.offsetWidth;
+    const handleResize = () => {
+      const width = canvas.offsetWidth;
+      if (width === lastWidth) return;
+      lastWidth = width;
+      starfield.resize();
+    };
     window.addEventListener('resize', handleResize);
 
     return () => {
