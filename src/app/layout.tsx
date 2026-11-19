@@ -3,6 +3,7 @@ import './globals.css';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ToastifyContainer } from '@/ToastifyContainer';
+import { WhatsAppButton } from '@/components/WhatsAppButton';
 
 export const metadata: Metadata = {
   title: {
@@ -19,11 +20,12 @@ type RootLayoutProps = {
 
 export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
-    <html lang='pt-BR'>
+    <html lang='pt-BR' data-scroll-behavior='smooth'>
       <body>
         <Header />
         {children}
         <Footer />
+        <WhatsAppButton />
         <ToastifyContainer />
       </body>
     </html>

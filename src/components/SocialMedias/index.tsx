@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import type { ReactNode } from 'react';
 import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
+import { getWhatsAppLink } from '@/utils/constants/contact-constants';
 
 type SocialMedia = {
   href: string;
@@ -23,7 +24,7 @@ const socialMedias: SocialMedia[] = [
     hoverColor: 'hover:text-pink-500 hover:border-pink-500/50',
   },
   {
-    href: 'https://wa.me/*',
+    href: getWhatsAppLink(),
     icon: <FaWhatsapp />,
     label: 'Whatsapp',
     hoverColor: 'hover:text-green-500 hover:border-green-500/50',

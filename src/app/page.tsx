@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   return (
-    <main className='select-none flex flex-col items-center'>
+    <main className='flex flex-col items-center'>
       <section id='inicio' className='w-full scroll-mt-24'>
         <Hero />
       </section>

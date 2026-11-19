@@ -15,11 +15,17 @@ import { IoChevronBack, IoChevronForward } from 'react-icons/io5';
 type CarouselProps = {
   children: ReactNode;
   className?: string;
+  /** Largura de cada slide (ex.: 'basis-full md:basis-1/3'). Padrão: largura do conteúdo. */
+  slideClassName?: string;
 };
 
-export function Carousel({ children, className }: CarouselProps) {
+export function Carousel({
+  children,
+  className,
+  slideClassName = 'basis-auto',
+}: CarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: 'center',
+    align: 'start',
     loop: false,
     containScroll: 'trimSnaps',
   });
@@ -68,14 +74,18 @@ export function Carousel({ children, className }: CarouselProps) {
 
   return (
     <div className={clsx('w-full', className)}>
-      {/* viewport */}
-      <div className='overflow-hidden' ref={emblaRef}>
-        {/* container */}
-        <div className='flex gap-6 py-2'>
+      {/* viewport — select-none evita selecionar texto ao arrastar */}
+      <div className='overflow-hidden select-none' ref={emblaRef}>
+        {/* container — o espaçamento vem do pl dos slides (padrão do embla),
+            assim a largura em % de cada slide já desconta o gap */}
+        <div className='-ml-6 flex py-4'>
           {slides.map((slide, index) => (
             <div
               key={index}
-              className='flex min-w-0 flex-[0_0_auto] justify-center'
+              className={clsx(
+                'flex min-w-0 shrink-0 grow-0 justify-center pl-6',
+                slideClassName,
+              )}
             >
               {slide}
             </div>

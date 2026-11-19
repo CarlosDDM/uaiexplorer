@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import { GenericSection } from '../GenericSection';
-import { LinkButton } from '../Link';
+import Link from 'next/link';
 import type { IconType } from 'react-icons';
+import { IoArrowForward } from 'react-icons/io5';
 
 type CardServicesProps = {
   title: string;
@@ -15,9 +15,9 @@ function CardIcon({ icon: Icon }: { icon: IconType }) {
   return (
     <div
       className={clsx(
-        '[&>svg]:h-6 [&>svg]:w-6 md:[&>svg]:h-8 md:[&>svg]:w-8',
+        '[&>svg]:h-6 [&>svg]:w-6 md:[&>svg]:h-7 md:[&>svg]:w-7',
         'text-button-default',
-        'rounded-full border border-solid border-border-card p-3',
+        'w-fit rounded-full border border-solid border-border-card p-3',
         'bg-linear-to-br from-background-navy to-background-card',
         'shadow-md shadow-border-card',
         'transition duration-300 ease-out',
@@ -25,7 +25,7 @@ function CardIcon({ icon: Icon }: { icon: IconType }) {
         'group-hover:border-border-card-hover group-hover:shadow-shadow-card-hover',
       )}
     >
-      <Icon />
+      <Icon aria-hidden />
     </div>
   );
 }
@@ -40,36 +40,57 @@ export function CardServices({
   return (
     <article
       className={clsx(
-        'group select-none',
-        'flex min-h-85 w-full max-w-80 flex-col items-start gap-4 p-6',
-        'rounded-xl border border-solid border-border-card',
-        'bg-background-card shadow-md shadow-border-card backdrop-blur-sm',
-        'hover:-translate-y-1',
-        'hover:border-border-card-hover hover:shadow-lg hover:shadow-shadow-card-hover',
+        'group relative flex h-full w-full flex-col gap-5 overflow-hidden p-6 md:p-7',
+        'rounded-2xl border border-solid border-border-card',
+        'bg-background-card/80 shadow-md shadow-border-card/40 backdrop-blur-sm',
         'transition duration-300 ease-out',
+        'hover:-translate-y-1 hover:border-border-card-hover hover:shadow-lg hover:shadow-shadow-card-hover',
+        'focus-within:border-border-card-hover',
       )}
     >
-      <CardIcon icon={icon} />
-
-      <GenericSection
-        title={title}
-        content={content}
-        titleAs='h3'
+      {/* filete de luz no topo do card no hover */}
+      <span
+        aria-hidden
         className={clsx(
-          'w-full text-left',
-          '[&_h3]:transition-colors [&_h3]:duration-300',
-          'group-hover:[&_h3]:text-button-default',
+          'pointer-events-none absolute inset-x-6 top-0 h-px',
+          'bg-linear-to-r from-transparent via-button-default to-transparent',
+          'opacity-0 transition-opacity duration-300 group-hover:opacity-100',
         )}
       />
 
-      <LinkButton
-        variant='default'
+      <CardIcon icon={icon} />
+
+      <div className='flex flex-col gap-3'>
+        <h3
+          className={clsx(
+            'text-xl leading-snug font-bold tracking-tight text-indigo-50 md:text-2xl',
+            'transition-colors duration-300 group-hover:text-button-default',
+          )}
+        >
+          {title}
+        </h3>
+        <p className='text-sm leading-relaxed text-indigo-200 md:text-base/relaxed'>
+          {content}
+        </p>
+      </div>
+
+      <Link
         href={href}
-        aria-label={`Saiba mais sobre ${title}`}
-        className='mt-auto w-full'
+        aria-label={`${buttonDescription} sobre ${title}`}
+        className={clsx(
+          'mt-auto inline-flex w-fit items-center gap-2 pt-2',
+          'text-sm font-semibold text-button-default md:text-base',
+          // o ::after cobre o card inteiro, então qualquer clique no card abre o link
+          'after:absolute after:inset-0 after:rounded-2xl after:content-[""]',
+          'focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-button-default/60',
+        )}
       >
         {buttonDescription}
-      </LinkButton>
+        <IoArrowForward
+          aria-hidden
+          className='h-4 w-4 transition-transform duration-300 group-hover:translate-x-1'
+        />
+      </Link>
     </article>
   );
 }

@@ -5,7 +5,8 @@ import { LinkButton } from '../../Link';
 
 const HERO_ACTIONS = [
   { href: '/contact', variant: 'default', label: 'Faça um orçamento' },
-  { href: '/services', variant: 'transparent', label: 'Veja nossos serviços' },
+  // âncora na própria home: rola suavemente até a seção de serviços
+  { href: '#servicos', variant: 'transparent', label: 'Veja nossos serviços' },
 ] as const;
 
 function HeroBackground() {

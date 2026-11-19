@@ -13,6 +13,8 @@
   --border-card: rgba(99, 149, 255, 0.25);
   --border-card-hover: rgba(99, 149, 255, 0.5);
   --shadow-card-hover: rgba(99, 149, 255, 0.15);
+  --whatsapp: #25D366;
+  --whatsapp-hover: #1DA851;
 }
 
 @theme inline {
@@ -30,6 +32,8 @@
   --color-border-card: var(--border-card);
   --color-border-card-hover: var(--border-card-hover);
   --color-shadow-card-hover: var(--shadow-card-hover);
+  --color-whatsapp: var(--whatsapp);
+  --color-whatsapp-hover: var(--whatsapp-hover);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -39,8 +43,16 @@
   }
 }
 
-html {
-  scroll-behavior: smooth;
+/*
+ * Rolagem suave para links âncora (#servicos, #seo...). Quem pede menos
+ * movimento no sistema operacional recebe o pulo instantâneo.
+ * O atributo data-scroll-behavior='smooth' no <html> (layout.tsx) faz o Next
+ * desligar a suavidade nas trocas de página, que continuam instantâneas.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
 }
 
 body {
