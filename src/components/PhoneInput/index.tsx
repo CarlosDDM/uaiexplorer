@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { GenericInput } from '../GenericInput';
 import { phoneMask } from '@/utils/masks/phone-mask';
 
@@ -12,11 +12,13 @@ export function PhoneInput({
   defaultValue = '',
   ...props
 }: PhoneInputProps) {
-  const [phone, setPhone] = useState(phoneMask(String(defaultValue)));
+  const [phone, setPhone] = useState(() => phoneMask(String(defaultValue)));
+  const [prevDefaultValue, setPrevDefaultValue] = useState(defaultValue);
 
-  useEffect(() => {
+  if (defaultValue !== prevDefaultValue) {
+    setPrevDefaultValue(defaultValue);
     setPhone(phoneMask(String(defaultValue)));
-  }, [defaultValue]);
+  }
 
   function handleOnChange(e: React.ChangeEvent<HTMLInputElement>) {
     setPhone(phoneMask(e.target.value));
