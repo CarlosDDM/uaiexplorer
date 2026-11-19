@@ -29,7 +29,10 @@ export default function HomePage() {
 
       <hr className='mx-auto my-6 h-px w-full max-w-6xl border-0 bg-gradient-to-r from-transparent via-border-card to-transparent md:my-10' />
 
-      <section id='contato' className='w-full scroll-mt-24 px-4 pb-8'>
+      <section
+        id='contato'
+        className='mx-auto w-full max-w-6xl scroll-mt-24 px-4 pb-8'
+      >
         <Contact />
       </section>
     </main>
