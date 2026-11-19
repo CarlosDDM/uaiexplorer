@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { Badge } from '@/components/Badge';
 import { CardServices } from '@/components/CardServices';
 import { Carousel } from '@/components/Carousel';
 import { GenericSection } from '@/components/GenericSection';
@@ -51,7 +50,6 @@ export function Services() {
     >
       <GenericSection
         className='min-w-0'
-        eyebrow={<Badge>Nossos serviços</Badge>}
         title='O que podemos te oferecer'
         content={<ServicesDescription />}
       />

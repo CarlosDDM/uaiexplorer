@@ -1,7 +1,6 @@
 import { Fragment } from 'react';
 import clsx from 'clsx';
 import { IoCheckmark } from 'react-icons/io5';
-import { Badge } from '@/components/Badge';
 import { GenericSection } from '@/components/GenericSection';
 import { LinkButton } from '@/components/Link';
 import { ServiceInfoNav } from '@/components/ServiceInfoNav';
@@ -105,7 +104,6 @@ export default function InfoPage() {
     <main className='mx-auto min-h-svh w-full max-w-6xl px-4 pt-32 pb-20'>
       <GenericSection
         className='mx-auto max-w-3xl text-center'
-        eyebrow={<Badge>Detalhes dos serviços</Badge>}
         title='Entenda o que cada serviço faz por você'
         titleAs='h1'
         content={

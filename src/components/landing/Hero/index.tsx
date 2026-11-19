@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { Badge } from '../../Badge';
 import { Container } from '../../Container';
 import { GenericSection } from '../../GenericSection';
 import { LinkButton } from '../../Link';
@@ -56,7 +55,6 @@ export function Hero() {
               conversão até plataformas de E-commerce completas.
             </p>
           }
-          eyebrow={<Badge>Desenvolvimento web sob medida</Badge>}
           titleAs='h1'
           className='mx-auto w-full max-w-150 text-center md:max-w-200'
         >

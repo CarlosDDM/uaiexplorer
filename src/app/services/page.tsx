@@ -1,4 +1,3 @@
-import { Badge } from '@/components/Badge';
 import { CardServices } from '@/components/CardServices';
 import { GenericSection } from '@/components/GenericSection';
 import { LinkButton } from '@/components/Link';
@@ -13,7 +12,6 @@ function ServicesHeader() {
   return (
     <GenericSection
       className='mx-auto max-w-3xl text-center'
-      eyebrow={<Badge>Nossos serviços</Badge>}
       title='Transforme seus negócios com nossos serviços'
       titleAs='h1'
       content={
