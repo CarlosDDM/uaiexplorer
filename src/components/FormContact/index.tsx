@@ -51,6 +51,8 @@ export function FormContact() {
             placeholder='Seu nome'
             type='text'
             name='name'
+            minLength={3}
+            maxLength={30}
             defaultValue={formState.name}
             required
           />
@@ -74,6 +76,7 @@ export function FormContact() {
           placeholder='Conte um pouco sobre o seu projeto'
           name='message'
           rows={5}
+          minLength={10}
           maxLength={200}
           defaultValue={formState.message}
           required

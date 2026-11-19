@@ -6,7 +6,7 @@ import { SOCIAL_LINKS } from '@/utils/constants/social-constants';
 
 const headingStyle = 'mb-4 text-sm font-semibold text-indigo-50';
 const linkStyle = clsx(
-  'text-sm text-indigo-300 transition duration-300 hover:text-indigo-50',
+  'py-1 text-sm text-indigo-300 transition duration-300 hover:text-indigo-50',
   'rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-button-default',
 );
 
@@ -28,39 +28,43 @@ export function Footer() {
             </p>
           </div>
 
-          <nav aria-label='Rodapé' className='contents'>
-            <div>
-              <h2 className={headingStyle}>Navegação</h2>
-              <ul className='flex flex-col gap-2'>
-                {NAV_ITEMS.map(item => (
-                  <li key={item.href}>
-                    <Link href={item.href} className={linkStyle}>
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h2 className={headingStyle}>Contato</h2>
-              <ul className='flex flex-col gap-2'>
-                {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
-                  <li key={label}>
-                    <a
-                      href={href}
-                      target='_blank'
-                      rel='noopener noreferrer'
-                      className={clsx(linkStyle, 'inline-flex items-center gap-2')}
-                    >
-                      <Icon aria-hidden />
-                      {label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          <nav aria-label='Rodapé'>
+            <h2 className={headingStyle}>Navegação</h2>
+            <ul role='list' className='flex flex-col gap-1'>
+              {NAV_ITEMS.map(item => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className={clsx(linkStyle, 'inline-block')}
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </nav>
+
+          <div>
+            <h2 className={headingStyle}>Contato</h2>
+            <ul role='list' className='flex flex-col gap-1'>
+              {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
+                <li key={label}>
+                  <a
+                    href={href}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className={clsx(
+                      linkStyle,
+                      'inline-flex items-center gap-2',
+                    )}
+                  >
+                    <Icon aria-hidden />
+                    {label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <div className='mt-10 border-t border-border-card pt-6 pb-24 md:pb-6'>

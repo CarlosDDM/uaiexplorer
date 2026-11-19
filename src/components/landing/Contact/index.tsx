@@ -50,7 +50,7 @@ function ContactPitch({
 
           <div>
             <SubTitle className={subTitleStyle}>Como funciona</SubTitle>
-            <ol className='mt-4 flex flex-col gap-4'>
+            <ol role='list' className='mt-4 flex flex-col gap-4'>
               {CONTACT_STEPS.map((step, index) => (
                 <li key={step.title} className='flex items-start gap-3'>
                   <span className='grid h-7 w-7 shrink-0 place-content-center rounded-full border border-border-card-hover text-sm text-button-default'>
@@ -69,7 +69,7 @@ function ContactPitch({
 
           <div>
             <SubTitle className={subTitleStyle}>Prefere falar direto?</SubTitle>
-            <ul className='mt-4 flex flex-col gap-3'>
+            <ul role='list' className='mt-4 flex flex-col gap-3'>
               {SOCIAL_LINKS.map(({ label, href, handle, icon: Icon }) => (
                 <li key={label}>
                   <a

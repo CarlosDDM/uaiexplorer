@@ -5,7 +5,6 @@ type GenericSectionTitle = 'h1' | 'h2' | 'h3';
 type GenericSectionProps = {
   title: string;
   content?: React.ReactNode;
-  eyebrow?: React.ReactNode;
   titleAs?: GenericSectionTitle;
   children?: React.ReactNode;
 } & Omit<React.ComponentProps<'section'>, 'title' | 'content' | 'children'>;
@@ -13,7 +12,6 @@ type GenericSectionProps = {
 export function GenericSection({
   title,
   content,
-  eyebrow,
   titleAs: Title = 'h2',
   children,
   ...props
@@ -32,7 +30,6 @@ export function GenericSection({
   return (
     <section {...props}>
       <div className='py-2'>
-        {eyebrow && <div className='mb-6'>{eyebrow}</div>}
         <Title className={titleStyle}>{title}</Title>
         {typeof content === 'string' ? (
           <p className='text-sm/tight mb-8'>{content}</p>

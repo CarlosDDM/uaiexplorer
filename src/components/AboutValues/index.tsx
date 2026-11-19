@@ -46,6 +46,7 @@ function AboutValueItem({
 export function AboutValues({ headingAs, layout }: AboutValuesProps) {
   return (
     <ul
+      role='list'
       className={clsx(
         layout === 'columns' && 'grid w-full gap-8 md:grid-cols-3 md:gap-10',
         layout === 'list' && 'flex flex-col',

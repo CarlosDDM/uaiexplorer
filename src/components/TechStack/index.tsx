@@ -19,7 +19,7 @@ export function TechStack() {
             <h3 className='text-sm font-semibold text-indigo-50'>
               {group.label}
             </h3>
-            <ul className='flex flex-col gap-3'>
+            <ul role='list' className='flex flex-col gap-3'>
               {group.techs.map(tech => (
                 <TechStackItem
                   key={tech.name}
