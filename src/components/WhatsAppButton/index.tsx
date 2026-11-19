@@ -8,7 +8,7 @@ export function WhatsAppButton() {
       href={getWhatsAppLink()}
       target='_blank'
       rel='noopener noreferrer'
-      aria-label='Fale com a gente pelo WhatsApp'
+      aria-label='Fale com a gente pelo WhatsApp (abre em nova aba)'
       className={clsx(
         'group fixed z-90 flex items-center gap-3',
         'right-[max(1rem,env(safe-area-inset-right))] bottom-[max(1rem,env(safe-area-inset-bottom))]',

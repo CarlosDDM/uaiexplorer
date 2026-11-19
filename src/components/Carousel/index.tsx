@@ -78,7 +78,7 @@ export function Carousel({
       <div className='overflow-hidden select-none' ref={emblaRef}>
         {/* container — o espaçamento vem do pl dos slides (padrão do embla),
             assim a largura em % de cada slide já desconta o gap */}
-        <div className='-ml-6 flex py-4'>
+        <div className='-ml-6 flex py-6'>
           {slides.map((slide, index) => (
             <div
               key={index}

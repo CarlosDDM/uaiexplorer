@@ -30,7 +30,21 @@ export function ServiceInfoNav({ items }: ServiceInfoNavProps) {
     );
 
     sections.forEach(section => observer.observe(section));
-    return () => observer.disconnect();
+
+    // no fim da página a última seção pode não chegar à faixa do observer
+    const lastId = items[items.length - 1]?.id;
+    const handleScroll = () => {
+      const atBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 2;
+      if (atBottom && lastId) setActiveId(lastId);
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, [items]);
 
   return (
