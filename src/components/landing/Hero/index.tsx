@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { Badge } from '../../Badge';
 import { Container } from '../../Container';
 import { GenericSection } from '../../GenericSection';
 import { LinkButton } from '../../Link';
@@ -28,23 +29,6 @@ function HeroBackground() {
   );
 }
 
-function HeroBadge() {
-  return (
-    <span
-      className={clsx(
-        'mb-6 inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm',
-        'border border-border-card bg-background-card/60 text-indigo-200 backdrop-blur-sm',
-      )}
-    >
-      <span className='relative flex h-2 w-2'>
-        <span className='absolute inline-flex h-full w-full animate-ping rounded-full bg-button-default opacity-75' />
-        <span className='relative inline-flex h-2 w-2 rounded-full bg-button-default' />
-      </span>
-      Desenvolvimento web sob medida
-    </span>
-  );
-}
-
 function HeroActions() {
   return (
     <div className='flex flex-col items-center justify-center gap-4 sm:flex-row'>
@@ -66,16 +50,16 @@ export function Hero() {
         <GenericSection
           title='Sua presença digital com o impacto que sua marca merece.'
           content={
-            <p className='pb-8 md:text-2xl'>
+            <p className='mx-auto max-w-2xl pb-8 leading-relaxed text-indigo-200 md:text-xl'>
               Do pequeno negócio à grande empresa, temos a solução digital ideal
               para alavancar suas vendas. Criamos desde Landing Pages focadas em
               conversão até plataformas de E-commerce completas.
             </p>
           }
+          eyebrow={<Badge>Desenvolvimento web sob medida</Badge>}
           titleAs='h1'
           className='mx-auto w-full max-w-150 text-center md:max-w-200'
         >
-          <HeroBadge />
           <HeroActions />
         </GenericSection>
       </div>

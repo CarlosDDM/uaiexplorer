@@ -46,18 +46,13 @@ function ServiceFeatureItem({ title, content }: ServiceFeature) {
   );
 }
 
-type ServiceInfoBlockProps = ServiceDetail & {
-  position: number;
-};
-
 function ServiceInfoBlock({
   id,
   title,
   subtitle,
   description,
   features,
-  position,
-}: ServiceInfoBlockProps) {
+}: ServiceDetail) {
   const headingId = `${id}-titulo`;
 
   return (
@@ -69,9 +64,6 @@ function ServiceInfoBlock({
     >
       {/* coluna de texto: fica presa no topo enquanto a lista rola (desktop) */}
       <div className='flex flex-col gap-4 lg:sticky lg:top-40 lg:col-span-5 lg:self-start'>
-        <span className='font-mono text-sm font-semibold tracking-widest text-button-default'>
-          {String(position).padStart(2, '0')}
-        </span>
         <h2
           id={headingId}
           className='text-2xl leading-tight font-bold tracking-tight text-balance text-indigo-50 md:text-4xl'
@@ -132,7 +124,7 @@ export default function InfoPage() {
             {index > 0 && (
               <hr className='h-px w-full border-0 bg-gradient-to-r from-transparent via-border-card to-transparent' />
             )}
-            <ServiceInfoBlock {...detail} position={index + 1} />
+            <ServiceInfoBlock {...detail} />
           </Fragment>
         ))}
       </div>

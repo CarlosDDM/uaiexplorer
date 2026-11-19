@@ -5,14 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoMdClose } from 'react-icons/io';
-import type { NavListModel } from '@/models/nav-list-model';
-
-const NAV_ITEMS: NavListModel[] = [
-  { label: 'Home', href: '/' },
-  { label: 'Sobre nós', href: '/about' },
-  { label: 'Serviços', href: '/services' },
-  { label: 'Contato', href: '/contact' },
-];
+import { NAV_ITEMS } from '@/utils/constants/nav-constants';
 
 function isActive(pathname: string, href: string) {
   return href === '/' ? pathname === '/' : pathname.startsWith(href);

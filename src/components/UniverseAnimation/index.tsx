@@ -37,7 +37,7 @@ export function UniverseAnimation({ children }: UniverseAnimationProps) {
     <div className='relative w-full'>
       <canvas
         ref={canvasRef}
-        className='absolute inset-0 block h-full w-full rounded'
+        className='absolute inset-0 block h-full w-full rounded [mask-image:linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)]'
         style={{ background: '#05060f' }}
       />
 

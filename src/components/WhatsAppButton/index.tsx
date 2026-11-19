@@ -1,8 +1,15 @@
+'use client';
 import clsx from 'clsx';
+import { usePathname } from 'next/navigation';
 import { FaWhatsapp } from 'react-icons/fa';
 import { getWhatsAppLink } from '@/utils/constants/contact-constants';
 
 export function WhatsAppButton() {
+  const pathname = usePathname();
+
+  // /contact já lista o canal e o botão cobriria os campos no mobile
+  if (pathname === '/contact') return null;
+
   return (
     <a
       href={getWhatsAppLink()}

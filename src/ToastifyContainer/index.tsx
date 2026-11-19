@@ -12,7 +12,7 @@ export function ToastifyContainer() {
       rtl={false}
       pauseOnFocusLoss
       pauseOnHover
-      theme='light'
+      theme='dark'
       transition={Bounce}
     />
   );
