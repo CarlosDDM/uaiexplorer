@@ -40,7 +40,7 @@ export function FormContact() {
       <form
         action={action}
         className={clsx(
-          'flex flex-col py-2 gap-4 items-center justify-center',
+          'flex flex-col py-2 gap-4 justify-center',
           'max-w-md md:max-w-2xl mx-auto w-full',
           '[&>div]:w-full',
         )}
@@ -48,21 +48,21 @@ export function FormContact() {
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-full'>
           <GenericInput
             labelText='Nome'
-            placeholder='Digite o seu nome'
+            placeholder='Seu nome'
             type='text'
             name='name'
             defaultValue={formState.name}
             required
           />
           <PhoneInput
-            labelText='Telefone'
+            labelText='Telefone (opcional)'
             name='phone'
             defaultValue={formState.phone}
           />
         </div>
         <GenericInput
           labelText='E-mail'
-          placeholder='Digite o e-mail'
+          placeholder='voce@empresa.com.br'
           type='email'
           name='email'
           defaultValue={formState.email}
@@ -71,14 +71,21 @@ export function FormContact() {
 
         <TextareaInput
           labelText='Mensagem'
-          placeholder='Digite sua mensagem'
+          placeholder='Conte um pouco sobre o seu projeto'
           name='message'
+          rows={5}
+          maxLength={200}
           defaultValue={formState.message}
           required
         />
 
-        <Button type='submit' disabled={isPending} aria-busy={isPending}>
-          {isPending ? 'Enviando...' : 'Enviar'}
+        <Button
+          type='submit'
+          disabled={isPending}
+          aria-busy={isPending}
+          className='w-full max-w-none'
+        >
+          {isPending ? 'Enviando…' : 'Enviar mensagem'}
         </Button>
       </form>
     </div>

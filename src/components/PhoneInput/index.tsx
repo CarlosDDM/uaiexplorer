@@ -26,7 +26,7 @@ export function PhoneInput({
   return (
     <GenericInput
       pattern='\([0-9]{2}\) [0-9]{4,5}-[0-9]{4}'
-      placeholder='(__) _____-____'
+      placeholder='(31) 99999-9999'
       labelText={labelText}
       {...props}
       type='tel'

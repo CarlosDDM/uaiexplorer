@@ -1,6 +1,4 @@
-import { Container } from '@/components/Container';
 import { Contact } from '@/components/landing/Contact';
-import { SocialMedias } from '@/components/SocialMedias';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -9,11 +7,8 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <Container as='main'>
-      <div className='flex min-h-svh flex-col items-center justify-center gap-8 pt-24 pb-8 md:pt-24'>
-        <Contact />
-        <SocialMedias />
-      </div>
-    </Container>
+    <main className='mx-auto min-h-svh w-full max-w-6xl px-4 pt-32 pb-20'>
+      <Contact titleAs='h1' />
+    </main>
   );
 }

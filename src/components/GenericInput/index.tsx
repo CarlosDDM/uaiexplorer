@@ -12,7 +12,7 @@ export function GenericInput({ labelText = '', ...props }: GenericInputProps) {
     <div className='flex flex-col gap-2'>
       {labelText && (
         <label
-          className='text-xs text-slate-400 uppercase tracking-wider'
+          className='text-sm font-medium text-indigo-200'
           htmlFor={id}
         >
           {labelText}
@@ -26,11 +26,12 @@ export function GenericInput({ labelText = '', ...props }: GenericInputProps) {
           'border border-white/10',
           'rounded-lg',
           'px-3.5 py-3',
-          'text-slate-200',
-          'placeholder:text-slate-500',
+          'text-indigo-50',
+          'placeholder:text-indigo-300/50',
           'outline-none',
           'transition',
           'focus:border-blue-500',
+          'focus-visible:ring-2 focus-visible:ring-button-default/40',
           'focus:bg-white/10',
           'disabled:opacity-40',
           'disabled:cursor-not-allowed',
