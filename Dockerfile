@@ -15,9 +15,11 @@ ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # Variáveis NEXT_PUBLIC_* são embutidas AQUI, no build (não em runtime).
-# Se precisar de alguma, passe com --build-arg e descomente:
-# ARG NEXT_PUBLIC_API_URL
-# ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+# Passe os valores com --build-arg NEXT_PUBLIC_MAIL_API_URL=... --build-arg NEXT_PUBLIC_CONTACT_FORM_SLUG=...
+ARG NEXT_PUBLIC_MAIL_API_URL
+ARG NEXT_PUBLIC_CONTACT_FORM_SLUG
+ENV NEXT_PUBLIC_MAIL_API_URL=$NEXT_PUBLIC_MAIL_API_URL
+ENV NEXT_PUBLIC_CONTACT_FORM_SLUG=$NEXT_PUBLIC_CONTACT_FORM_SLUG
 RUN npm run build
 
 # ---- Stage 3: runner (imagem final enxuta) ----
