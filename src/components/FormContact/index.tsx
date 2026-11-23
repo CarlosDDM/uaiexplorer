@@ -6,34 +6,35 @@ import { PhoneInput } from '../PhoneInput';
 import { TextareaInput } from '../TextareaInput';
 import { Button } from '../Button';
 import { useActionState, useEffect } from 'react';
-import { FormAction } from '@/actions/form-action';
+import {
+  submitContactForm,
+  type ContactFormState,
+} from '@/lib/form/submit-contact-form';
 import { InitialFormData } from '@/lib/form/schema-form';
 import { toastMessage } from '@/adapters/toast-adapter';
 
 export function FormContact() {
-  const [state, action, isPending] = useActionState(FormAction, {
+  const [state, action, isPending] = useActionState(submitContactForm, {
     formState: InitialFormData.parse({}),
     errors: [],
     success: false,
-  });
+  } satisfies ContactFormState);
 
   const { formState } = state;
 
+  // Depende do state inteiro: useActionState gera um objeto novo a cada envio,
+  // então dois sucessos seguidos também disparam o toast.
   useEffect(() => {
     if (state.errors.length > 0) {
       toastMessage.dismiss();
       state.errors.forEach(error => {
         toastMessage.error(error);
       });
-    }
-  }, [state.errors]);
-
-  useEffect(() => {
-    if (state.success) {
+    } else if (state.success) {
       toastMessage.dismiss();
       toastMessage.success('Mensagem enviada com sucesso');
     }
-  }, [state.success]);
+  }, [state]);
 
   return (
     <div>
@@ -42,7 +43,7 @@ export function FormContact() {
         className={clsx(
           'flex flex-col py-2 gap-4 justify-center',
           'max-w-md md:max-w-2xl mx-auto w-full',
-          '[&>div]:w-full',
+          '[&>div]:w-full relative',
         )}
       >
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4 w-full'>
@@ -81,6 +82,23 @@ export function FormContact() {
           defaultValue={formState.message}
           required
         />
+
+        {/* honeypot: fora da tela, bots preenchem; a API descarta se vier preenchido */}
+        <div
+          aria-hidden='true'
+          inert
+          className='absolute -left-[9999px] w-px h-px overflow-hidden'
+        >
+          <label htmlFor='contact_url'>Site</label>
+          <input
+            id='contact_url'
+            type='text'
+            name='contact_url'
+            tabIndex={-1}
+            autoComplete='off'
+            defaultValue=''
+          />
+        </div>
 
         <Button
           type='submit'
