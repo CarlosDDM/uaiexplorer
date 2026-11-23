@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
-import { LOGO_URL } from '@/utils/constants/brand-constants';
+import { LOGO_URL } from '@/utils/constants/image-constants';
 import { NAV_ITEMS } from '@/utils/constants/nav-constants';
 import { SOCIAL_LINKS } from '@/utils/constants/social-constants';
 

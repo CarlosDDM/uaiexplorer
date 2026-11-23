@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { HeaderMenu } from '../HeaderMenu';
-import { LOGO_URL } from '@/utils/constants/brand-constants';
+import { LOGO_URL } from '@/utils/constants/image-constants';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 

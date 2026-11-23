@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import { HERO_BG_URL } from '@/utils/constants/image-constants';
 import { Container } from '../../Container';
 import { GenericSection } from '../../GenericSection';
 import { LinkButton } from '../../Link';
@@ -19,7 +20,10 @@ function HeroBackground() {
       )}
     >
       {/* imagem base */}
-      <div className="absolute inset-0 bg-cover bg-center bg-no-repeat [background-image:url('/hero-bg.webp')]" />
+      <div
+        className='absolute inset-0 bg-cover bg-center bg-no-repeat'
+        style={{ backgroundImage: `url('${HERO_BG_URL}')` }}
+      />
       {/* tint azul por cima da imagem */}
       <div className='absolute inset-0 bg-[rgba(1,9,94,0.82)]' />
       {/* vinheta radial pra escurecer as bordas */}
