@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import Image from 'next/image';
 import { HERO_BG_URL } from '@/utils/constants/image-constants';
 import { Container } from '../../Container';
 import { GenericSection } from '../../GenericSection';
@@ -20,9 +21,13 @@ function HeroBackground() {
       )}
     >
       {/* imagem base */}
-      <div
-        className='absolute inset-0 bg-cover bg-center bg-no-repeat'
-        style={{ backgroundImage: `url('${HERO_BG_URL}')` }}
+      <Image
+        src={HERO_BG_URL}
+        alt=''
+        fill
+        preload
+        sizes='100vw'
+        className='object-cover object-center'
       />
       {/* tint azul por cima da imagem */}
       <div className='absolute inset-0 bg-[rgba(1,9,94,0.82)]' />
