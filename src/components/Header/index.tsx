@@ -33,7 +33,7 @@ export function Header() {
           <Image
             src={LOGO_URL}
             alt='Logo uaiexplorer'
-            priority
+            preload
             width={0}
             height={0}
             className='h-auto w-37.5'
