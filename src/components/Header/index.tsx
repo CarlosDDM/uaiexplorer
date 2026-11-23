@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { HeaderMenu } from '../HeaderMenu';
+import { LOGO_URL } from '@/utils/constants/image-constants';
 import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 
@@ -30,7 +31,7 @@ export function Header() {
       <div className='mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3'>
         <Link href='/' aria-label='UAIExplorer — página inicial'>
           <Image
-            src='/logo.svg'
+            src={LOGO_URL}
             alt='Logo uaiexplorer'
             priority
             width={0}

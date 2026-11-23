@@ -32,7 +32,7 @@ ENV HOSTNAME=0.0.0.0
 
 # o output standalone já traz o server.js + só as deps que o Next usa.
 # usa o usuário "node" que já vem na imagem oficial (roda non-root, igual ao exemplo oficial do Next)
-COPY --from=builder --chown=node:node /app/public ./public
+# sem pasta public: logo e hero-bg vêm de images.uaiexplorer.com.br
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
