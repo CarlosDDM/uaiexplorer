@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
+import { LOGO_URL } from '@/utils/constants/brand-constants';
 import { NAV_ITEMS } from '@/utils/constants/nav-constants';
 import { SOCIAL_LINKS } from '@/utils/constants/social-constants';
 
@@ -17,7 +18,7 @@ export function Footer() {
         <div className='grid gap-10 md:grid-cols-[2fr_1fr_1fr]'>
           <div className='flex flex-col gap-4'>
             <Image
-              src='/logo.svg'
+              src={LOGO_URL}
               alt='UAI Explorer'
               width={0}
               height={0}
