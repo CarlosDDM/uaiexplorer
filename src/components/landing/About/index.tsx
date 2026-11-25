@@ -24,7 +24,7 @@ export function About({ titleAs: Title = 'h2' }: AboutProps) {
         </LinkButton>
       </div>
 
-      <div className='rounded-2xl border border-border-card bg-background-black-default/70 p-6 backdrop-blur-md md:p-8'>
+      <div className='rounded-2xl border border-border-card bg-background-black-default/85 p-6 md:p-8'>
         <AboutValues layout='list' headingAs={valuesHeading} />
       </div>
     </div>

@@ -16,6 +16,10 @@ const LAYERS: Layer[] = [
 const STAR_COLORS = ['#ffffff', '#cce0ff', '#ffd9b3', '#d4b8ff', '#b8ffe0'];
 const BACKGROUND = '#05060f';
 
+const SPRITE_SIZE = 64;
+const SPRITE_CORE_RADIUS = 6;
+const FRAME_INTERVAL = 1000 / 30;
+
 type Star = {
   x: number;
   y: number;
@@ -42,10 +46,40 @@ function rand(min: number, max: number) {
   return min + Math.random() * (max - min);
 }
 
+/**
+ * Pré-renderiza um sprite com halo suave para cada cor de estrela.
+ * Evita chamar context.shadowBlur centenas de vezes por frame.
+ */
+function createStarSprites(): Map<string, HTMLCanvasElement> {
+  const sprites = new Map<string, HTMLCanvasElement>();
+  const center = SPRITE_SIZE / 2;
+
+  for (const color of STAR_COLORS) {
+    const sprite = document.createElement('canvas');
+    sprite.width = SPRITE_SIZE;
+    sprite.height = SPRITE_SIZE;
+    const spriteCtx = sprite.getContext('2d');
+
+    if (spriteCtx) {
+      spriteCtx.fillStyle = color;
+      spriteCtx.shadowColor = color;
+      spriteCtx.shadowBlur = SPRITE_CORE_RADIUS * 2.5;
+      spriteCtx.beginPath();
+      spriteCtx.arc(center, center, SPRITE_CORE_RADIUS, 0, Math.PI * 2);
+      spriteCtx.fill();
+    }
+
+    sprites.set(color, sprite);
+  }
+
+  return sprites;
+}
+
 export type Starfield = {
   start: () => void;
   stop: () => void;
   resize: () => void;
+  renderOnce: () => void;
   destroy: () => void;
 };
 
@@ -59,16 +93,27 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
 
   if (!ctx) {
     const noop = () => {};
-    return { start: noop, stop: noop, resize: noop, destroy: noop };
+    return {
+      start: noop,
+      stop: noop,
+      resize: noop,
+      renderOnce: noop,
+      destroy: noop,
+    };
   }
 
   const context: CanvasRenderingContext2D = ctx;
+  const sprites = createStarSprites();
+  const bgCanvas = document.createElement('canvas');
+  const bgCtx = bgCanvas.getContext('2d');
 
   let width = 0;
   let height = 0;
   let stars: Star[] = [];
   const shooters: Shooter[] = [];
   let lastShot = 0;
+  let nextShotDelay = rand(1800, 4000);
+  let lastFrameTime = 0;
   let animId = 0;
 
   function createStars() {
@@ -76,13 +121,14 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
 
     for (const { count, speed, size, alpha } of LAYERS) {
       for (let i = 0; i < count; i++) {
+        const baseAlpha = rand(...alpha);
         stars.push({
           x: rand(0, width),
           y: rand(0, height),
           size: rand(...size),
           speed,
-          alpha: rand(...alpha),
-          baseAlpha: rand(...alpha),
+          alpha: baseAlpha,
+          baseAlpha,
           twinkleSpeed: rand(0.005, 0.025),
           twinklePhase: rand(0, Math.PI * 2),
           color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
@@ -91,21 +137,14 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
     }
   }
 
-  function resize() {
-    const dpr = window.devicePixelRatio || 1;
+  function renderBackground(dpr: number) {
+    if (!bgCtx || width === 0 || height === 0) return;
 
-    width = canvas.offsetWidth;
-    height = canvas.offsetHeight;
-    canvas.width = Math.floor(width * dpr);
-    canvas.height = Math.floor(height * dpr);
-    // desenha em coordenadas CSS; o dpr cuida da nitidez em retina
-    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+    bgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    bgCtx.fillStyle = BACKGROUND;
+    bgCtx.fillRect(0, 0, width, height);
 
-    createStars();
-  }
-
-  function drawNebulas() {
-    const g1 = context.createRadialGradient(
+    const g1 = bgCtx.createRadialGradient(
       width * 0.3,
       height * 0.4,
       0,
@@ -115,10 +154,10 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
     );
     g1.addColorStop(0, 'rgba(60,30,120,0.18)');
     g1.addColorStop(1, 'rgba(0,0,0,0)');
-    context.fillStyle = g1;
-    context.fillRect(0, 0, width, height);
+    bgCtx.fillStyle = g1;
+    bgCtx.fillRect(0, 0, width, height);
 
-    const g2 = context.createRadialGradient(
+    const g2 = bgCtx.createRadialGradient(
       width * 0.75,
       height * 0.6,
       0,
@@ -128,32 +167,72 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
     );
     g2.addColorStop(0, 'rgba(20,60,100,0.14)');
     g2.addColorStop(1, 'rgba(0,0,0,0)');
-    context.fillStyle = g2;
+    bgCtx.fillStyle = g2;
+    bgCtx.fillRect(0, 0, width, height);
+  }
+
+  function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    width = canvas.offsetWidth;
+    height = canvas.offsetHeight;
+
+    if (width === 0 || height === 0) {
+      canvas.width = 0;
+      canvas.height = 0;
+      bgCanvas.width = 0;
+      bgCanvas.height = 0;
+      stars = [];
+      return;
+    }
+
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    // desenha em coordenadas CSS; o dpr cuida da nitidez em retina
+    context.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    bgCanvas.width = canvas.width;
+    bgCanvas.height = canvas.height;
+    renderBackground(dpr);
+
+    createStars();
+  }
+
+  function drawBackground() {
+    if (bgCanvas.width > 0 && bgCanvas.height > 0) {
+      context.drawImage(bgCanvas, 0, 0, width, height);
+      return;
+    }
+
+    context.fillStyle = BACKGROUND;
     context.fillRect(0, 0, width, height);
   }
 
-  function drawStars() {
+  function drawStars(step: number) {
     for (const s of stars) {
-      s.y += s.speed;
+      if (step > 0) {
+        s.y += s.speed * step;
 
-      if (s.y > height + s.size) {
-        s.y = -s.size;
-        s.x = rand(0, width);
+        if (s.y > height + s.size) {
+          s.y = -s.size;
+          s.x = rand(0, width);
+        }
+
+        s.twinklePhase += s.twinkleSpeed * step;
+        s.alpha = s.baseAlpha * (0.6 + 0.4 * Math.sin(s.twinklePhase));
       }
 
-      s.twinklePhase += s.twinkleSpeed;
-      s.alpha = s.baseAlpha * (0.6 + 0.4 * Math.sin(s.twinklePhase));
+      const sprite = sprites.get(s.color);
+      if (!sprite) continue;
 
-      context.save();
+      const drawSize = (SPRITE_SIZE / SPRITE_CORE_RADIUS) * s.size;
+      const half = drawSize / 2;
+
       context.globalAlpha = s.alpha;
-      context.fillStyle = s.color;
-      context.shadowColor = s.color;
-      context.shadowBlur = s.size * 2.5;
-      context.beginPath();
-      context.arc(s.x, s.y, s.size, 0, Math.PI * 2);
-      context.fill();
-      context.restore();
+      context.drawImage(sprite, s.x - half, s.y - half, drawSize, drawSize);
     }
+
+    context.globalAlpha = 1;
   }
 
   function spawnShooter() {
@@ -168,17 +247,22 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
     });
   }
 
-  function drawShooters(ts: number) {
-    if (ts - lastShot > rand(1800, 4000)) {
+  function drawShooters(ts: number, step: number) {
+    if (lastShot === 0) {
+      lastShot = ts;
+    }
+
+    if (ts - lastShot > nextShotDelay) {
       spawnShooter();
       lastShot = ts;
+      nextShotDelay = rand(1800, 4000);
     }
 
     for (let i = shooters.length - 1; i >= 0; i--) {
       const s = shooters[i];
-      s.x += Math.cos(s.angle) * s.speed;
-      s.y += Math.sin(s.angle) * s.speed;
-      s.life -= 0.035;
+      s.x += Math.cos(s.angle) * s.speed * step;
+      s.y += Math.sin(s.angle) * s.speed * step;
+      s.life -= 0.035 * step;
 
       if (s.life <= 0 || s.x > width + 200 || s.y > height + 200) {
         shooters.splice(i, 1);
@@ -202,16 +286,34 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
     }
   }
 
+  function drawFrame(ts: number, step: number) {
+    if (width === 0 || height === 0) return;
+
+    drawBackground();
+    drawStars(step);
+    drawShooters(ts, step);
+  }
+
   function draw(ts: number) {
-    context.clearRect(0, 0, width, height);
-    context.fillStyle = BACKGROUND;
-    context.fillRect(0, 0, width, height);
+    if (lastFrameTime !== 0 && ts - lastFrameTime < FRAME_INTERVAL) {
+      animId = requestAnimationFrame(draw);
+      return;
+    }
 
-    drawNebulas();
-    drawStars();
-    drawShooters(ts);
+    const elapsed =
+      lastFrameTime === 0 ? FRAME_INTERVAL : Math.min(ts - lastFrameTime, 100);
+    lastFrameTime = ts;
+    const step = elapsed / (1000 / 60);
 
+    drawFrame(ts, step);
     animId = requestAnimationFrame(draw);
+  }
+
+  function renderOnce() {
+    if (width === 0 || height === 0) return;
+
+    drawBackground();
+    drawStars(0);
   }
 
   function start() {
@@ -223,6 +325,8 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
       cancelAnimationFrame(animId);
       animId = 0;
     }
+    lastFrameTime = 0;
+    lastShot = 0;
   }
 
   function destroy() {
@@ -231,5 +335,5 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
 
   resize();
 
-  return { start, stop, resize, destroy };
+  return { start, stop, resize, renderOnce, destroy };
 }
