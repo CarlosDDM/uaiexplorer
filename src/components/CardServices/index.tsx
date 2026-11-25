@@ -20,8 +20,8 @@ function CardIcon({ icon: Icon }: { icon: IconType }) {
         'w-fit rounded-full border border-solid border-border-card p-3',
         'bg-linear-to-br from-background-navy to-background-card',
         'shadow-md shadow-border-card',
-        'transition duration-300 ease-out',
-        'group-hover:scale-105',
+        'transition duration-300 ease-out motion-reduce:transition-none',
+        'motion-safe:group-hover:scale-105',
         'group-hover:border-border-card-hover group-hover:shadow-shadow-card-hover',
       )}
     >
@@ -42,9 +42,9 @@ export function CardServices({
       className={clsx(
         'group relative flex h-full w-full flex-col gap-5 overflow-hidden p-6 md:p-7',
         'rounded-2xl border border-solid border-border-card',
-        'bg-background-card/80 shadow-md shadow-border-card/40 backdrop-blur-sm',
-        'transition duration-300 ease-out',
-        'hover:-translate-y-1 hover:border-border-card-hover hover:shadow-lg hover:shadow-shadow-card-hover',
+        'bg-background-card/90 shadow-md shadow-border-card/40',
+        'transition duration-300 ease-out motion-reduce:transition-none',
+        'motion-safe:hover:-translate-y-1 hover:border-border-card-hover hover:shadow-lg hover:shadow-shadow-card-hover',
         'focus-within:border-border-card-hover',
       )}
     >
@@ -88,7 +88,7 @@ export function CardServices({
         {buttonDescription}
         <IoArrowForward
           aria-hidden
-          className='h-4 w-4 transition-transform duration-300 group-hover:translate-x-1'
+          className='h-4 w-4 transition-transform duration-300 motion-safe:group-hover:translate-x-1 motion-reduce:transition-none'
         />
       </Link>
     </article>

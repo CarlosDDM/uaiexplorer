@@ -49,12 +49,12 @@ export function HeaderMenu() {
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
                 className={clsx(
-                  'relative pb-1 transition duration-300',
-                  'after:absolute after:bottom-0 after:h-0.5 after:bg-button-default after:content-[""]',
-                  'after:transition-all after:duration-300 after:ease-in-out',
+                  'relative pb-1 transition-colors duration-300',
+                  'after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:origin-center after:bg-button-default after:content-[""]',
+                  'after:transition-transform after:duration-300 after:ease-in-out motion-reduce:after:transition-none',
                   active
-                    ? 'text-indigo-50 after:left-0 after:w-full'
-                    : 'text-indigo-200 after:left-1/2 after:w-0 hover:text-indigo-50 hover:after:left-1/4 hover:after:w-1/2',
+                    ? 'text-indigo-50 after:scale-x-100'
+                    : 'text-indigo-200 after:scale-x-0 hover:text-indigo-50 hover:after:scale-x-50',
                 )}
               >
                 {item.label}
