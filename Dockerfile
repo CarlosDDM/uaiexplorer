@@ -14,6 +14,8 @@ WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# garante a pasta public (pode não existir no repo) para o COPY do runner
+RUN mkdir -p public
 # Variáveis NEXT_PUBLIC_* são embutidas AQUI, no build (não em runtime).
 # Passe os valores com --build-arg NEXT_PUBLIC_MAIL_API_URL=... --build-arg NEXT_PUBLIC_CONTACT_FORM_SLUG=...
 ARG NEXT_PUBLIC_MAIL_API_URL
@@ -32,7 +34,7 @@ ENV HOSTNAME=0.0.0.0
 
 # o output standalone já traz o server.js + só as deps que o Next usa.
 # usa o usuário "node" que já vem na imagem oficial (roda non-root, igual ao exemplo oficial do Next)
-# sem pasta public: logo e hero-bg vêm de images.uaiexplorer.com.br
+COPY --from=builder --chown=node:node /app/public ./public
 COPY --from=builder --chown=node:node /app/.next/standalone ./
 COPY --from=builder --chown=node:node /app/.next/static ./.next/static
 
