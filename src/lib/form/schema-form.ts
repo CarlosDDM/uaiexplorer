@@ -1,5 +1,5 @@
 import z from 'zod';
-import { phoneMask } from '@/utils/masks/phone-mask';
+import { phoneDigits } from '@/utils/masks/phone-mask';
 
 const FormBaseSchema = z.object({
   name: z
@@ -14,7 +14,7 @@ const FormBaseSchema = z.object({
   phone: z
     .string()
     .trim()
-    .transform(val => phoneMask(val).replace(/\D/g, '') || undefined)
+    .transform(val => phoneDigits(val) || undefined)
     .refine(val => !val || (val.length >= 10 && val.length <= 11), {
       message: 'Telefone inválido. Informe DDD + número',
     })

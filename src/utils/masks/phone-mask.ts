@@ -1,6 +1,16 @@
+/**
+ * Extrai os dígitos do telefone. Remove o código do país (55) só quando
+ * sobram mais de 11 dígitos — assim o DDD 55 (RS) continua válido.
+ */
+export function phoneDigits(phone: string) {
+  const digits = phone.replace(/\D/g, '');
+  return digits.length > 11 && digits.startsWith('55')
+    ? digits.slice(2)
+    : digits;
+}
+
 export function phoneMask(phone: string) {
-  const cleaned = phone.trim().replace(/^\+55\s*/, '');
-  const digits = cleaned.replace(/\D/g, '').slice(0, 11);
+  const digits = phoneDigits(phone).slice(0, 11);
 
   if (digits.length <= 2) return digits;
   if (digits.length <= 6) {
