@@ -20,6 +20,9 @@ export function PhoneInput({
     <GenericInput
       pattern='\([0-9]{2}\) [0-9]{4,5}-[0-9]{4}'
       placeholder='(31) 99999-9999'
+      maxLength={15}
+      inputMode='numeric'
+      autoComplete='tel-national'
       labelText={labelText}
       {...props}
       type='tel'
