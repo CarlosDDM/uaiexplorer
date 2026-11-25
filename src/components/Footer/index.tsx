@@ -20,8 +20,8 @@ export function Footer() {
             <Image
               src={LOGO_URL}
               alt='UAI Explorer'
-              width={0}
-              height={0}
+              width={128}
+              height={32}
               className='h-auto w-32'
             />
             <p className='max-w-xs text-sm text-indigo-300'>
