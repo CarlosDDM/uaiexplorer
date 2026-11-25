@@ -34,7 +34,7 @@ function HeroBackground() {
       {/* vinheta radial pra escurecer as bordas */}
       <div className='absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,transparent,transparent_45%,rgba(0,3,24,0.7))]' />
       {/* fade suave na base para fundir sem linha seca com o fundo estelar abaixo */}
-      <div className='absolute inset-x-0 bottom-0 h-36 bg-linear-to-b from-transparent via-[#05060f]/65 to-[#05060f] md:h-48' />
+      <div className='absolute inset-x-0 bottom-0 h-36 bg-linear-to-b from-transparent via-space/65 to-space md:h-48' />
     </div>
   );
 }

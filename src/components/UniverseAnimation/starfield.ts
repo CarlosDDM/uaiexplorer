@@ -14,11 +14,11 @@ const LAYERS: Layer[] = [
 ];
 
 const STAR_COLORS = ['#ffffff', '#cce0ff', '#ffd9b3', '#d4b8ff', '#b8ffe0'];
-const BACKGROUND = '#05060f';
+const BACKGROUND = '#05060f'; // manter em sincronia com --space em src/app/globals.css
 
 const SPRITE_SIZE = 64;
 const SPRITE_CORE_RADIUS = 6;
-const FRAME_INTERVAL = 1000 / 30;
+const BASE_FRAME_MS = 1000 / 60;
 const REFERENCE_AREA = 1440 * 700;
 
 type Star = {
@@ -328,15 +328,10 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
   }
 
   function draw(ts: number) {
-    if (lastFrameTime !== 0 && ts - lastFrameTime < FRAME_INTERVAL) {
-      animId = requestAnimationFrame(draw);
-      return;
-    }
-
     const elapsed =
-      lastFrameTime === 0 ? FRAME_INTERVAL : Math.min(ts - lastFrameTime, 100);
+      lastFrameTime === 0 ? BASE_FRAME_MS : Math.min(ts - lastFrameTime, 100);
     lastFrameTime = ts;
-    const step = elapsed / (1000 / 60);
+    const step = elapsed / BASE_FRAME_MS;
 
     drawFrame(ts, step);
     animId = requestAnimationFrame(draw);

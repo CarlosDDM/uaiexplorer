@@ -51,15 +51,14 @@ export function UniverseAnimation({ children }: UniverseAnimationProps) {
     let lastHeight = container.offsetHeight;
     let resizeRafId = 0;
 
-    // throttle em rAF para não recalcular o canvas a cada pixel de resize
-    // e ignora pequenas variações de altura da barra de endereço no mobile.
+    // throttle em rAF para não recalcular o canvas a cada pixel de resize.
     const resizeObserver = new ResizeObserver(() => {
       if (resizeRafId) return;
       resizeRafId = requestAnimationFrame(() => {
         resizeRafId = 0;
         const width = container.offsetWidth;
         const height = container.offsetHeight;
-        if (width === lastWidth && Math.abs(height - lastHeight) < 40) return;
+        if (width === lastWidth && height === lastHeight) return;
         lastWidth = width;
         lastHeight = height;
         starfield.resize();
@@ -86,18 +85,17 @@ export function UniverseAnimation({ children }: UniverseAnimationProps) {
       <div ref={containerRef} className='relative w-full overflow-hidden'>
         <canvas
           ref={canvasRef}
-          className='absolute inset-0 block h-full w-full'
-          style={{ background: '#05060f' }}
+          className='absolute inset-0 block h-full w-full bg-space'
         />
 
         {/* fades estáticos nas bordas para substituir mask-image sobre o canvas animado */}
         <div
           aria-hidden
-          className='pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-[#05060f] to-transparent md:h-32'
+          className='pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-space to-transparent md:h-32'
         />
         <div
           aria-hidden
-          className='pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-[#05060f] to-transparent md:h-32'
+          className='pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-space to-transparent md:h-32'
         />
 
         {/* scrim: escurece as estrelas atrás da coluna de texto */}
@@ -111,10 +109,10 @@ export function UniverseAnimation({ children }: UniverseAnimationProps) {
         </div>
       </div>
 
-      {/* mescla o #05060f do universo com o gradiente azul do body na seção abaixo */}
+      {/* mescla o fundo do universo (--space) com o gradiente azul do body na seção abaixo */}
       <div
         aria-hidden
-        className='pointer-events-none relative -z-10 -mt-px -mb-24 h-24 w-full bg-linear-to-b from-[#05060f] via-[#05060f]/55 to-transparent md:-mb-36 md:h-36'
+        className='pointer-events-none relative -z-10 -mt-px -mb-24 h-24 w-full bg-linear-to-b from-space via-space/55 to-transparent md:-mb-36 md:h-36'
       />
     </div>
   );
