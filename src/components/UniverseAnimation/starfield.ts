@@ -19,6 +19,9 @@ const BACKGROUND = '#05060f'; // manter em sincronia com --space em src/app/glob
 const SPRITE_SIZE = 64;
 const SPRITE_CORE_RADIUS = 6;
 const BASE_FRAME_MS = 1000 / 60;
+// intervalo mínimo entre quadros: em 120/144Hz desenha 1 a cada 2 vsyncs
+// (60/72fps); 9ms fica longe dos intervalos comuns e evita cadência irregular.
+const MIN_FRAME_MS = 9;
 const REFERENCE_AREA = 1440 * 700;
 
 type Star = {
@@ -328,6 +331,10 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
   }
 
   function draw(ts: number) {
+    if (lastFrameTime !== 0 && ts - lastFrameTime < MIN_FRAME_MS) {
+      animId = requestAnimationFrame(draw);
+      return;
+    }
     const elapsed =
       lastFrameTime === 0 ? BASE_FRAME_MS : Math.min(ts - lastFrameTime, 100);
     lastFrameTime = ts;
