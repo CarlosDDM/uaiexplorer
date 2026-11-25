@@ -16,7 +16,7 @@ function HeroBackground() {
     <div
       aria-hidden
       className={clsx(
-        'pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2',
+        'pointer-events-none absolute top-0 -bottom-px left-1/2 -z-10 w-screen -translate-x-1/2',
         'overflow-hidden',
       )}
     >
@@ -33,6 +33,8 @@ function HeroBackground() {
       <div className='absolute inset-0 bg-[rgba(1,9,94,0.82)]' />
       {/* vinheta radial pra escurecer as bordas */}
       <div className='absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,transparent,transparent_45%,rgba(0,3,24,0.7))]' />
+      {/* fade suave na base para fundir sem linha seca com o fundo estelar abaixo */}
+      <div className='absolute inset-x-0 bottom-0 h-36 bg-linear-to-b from-transparent via-space/65 to-space md:h-48' />
     </div>
   );
 }

@@ -47,57 +47,73 @@ export function UniverseAnimation({ children }: UniverseAnimationProps) {
     document.addEventListener('visibilitychange', syncPlayback);
     motionQuery.addEventListener('change', syncPlayback);
 
-    // no mobile, rolar mostra/esconde a barra de endereço e dispara "resize"
-    // só de altura — só recriamos o starfield quando a largura muda de fato.
-    let lastWidth = canvas.offsetWidth;
-    const handleResize = () => {
-      const width = canvas.offsetWidth;
-      if (width === lastWidth) return;
-      lastWidth = width;
-      starfield.resize();
-      starfield.renderOnce();
-      syncPlayback();
-    };
-    window.addEventListener('resize', handleResize);
+    let lastWidth = container.offsetWidth;
+    let lastHeight = container.offsetHeight;
+    let resizeRafId = 0;
+
+    // throttle em rAF para não recalcular o canvas a cada pixel de resize.
+    const resizeObserver = new ResizeObserver(() => {
+      if (resizeRafId) return;
+      resizeRafId = requestAnimationFrame(() => {
+        resizeRafId = 0;
+        const width = container.offsetWidth;
+        const height = container.offsetHeight;
+        if (width === lastWidth && height === lastHeight) return;
+        lastWidth = width;
+        lastHeight = height;
+        starfield.resize();
+        starfield.renderOnce();
+        syncPlayback();
+      });
+    });
+    resizeObserver.observe(container);
 
     syncPlayback();
 
     return () => {
       observer.disconnect();
+      resizeObserver.disconnect();
+      if (resizeRafId) cancelAnimationFrame(resizeRafId);
       document.removeEventListener('visibilitychange', syncPlayback);
       motionQuery.removeEventListener('change', syncPlayback);
-      window.removeEventListener('resize', handleResize);
       starfield.destroy();
     };
   }, []);
 
   return (
-    <div ref={containerRef} className='relative w-full overflow-hidden'>
-      <canvas
-        ref={canvasRef}
-        className='absolute inset-0 block h-full w-full'
-        style={{ background: '#05060f' }}
-      />
+    <div className='w-full'>
+      <div ref={containerRef} className='relative w-full overflow-hidden'>
+        <canvas
+          ref={canvasRef}
+          className='absolute inset-0 block h-full w-full bg-space'
+        />
 
-      {/* fades estáticos nas bordas para substituir mask-image sobre o canvas animado */}
-      <div
-        aria-hidden
-        className='pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background-black-default to-transparent'
-      />
-      <div
-        aria-hidden
-        className='pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background-black-default to-transparent'
-      />
+        {/* fades estáticos nas bordas para substituir mask-image sobre o canvas animado */}
+        <div
+          aria-hidden
+          className='pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-space to-transparent md:h-32'
+        />
+        <div
+          aria-hidden
+          className='pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-space to-transparent md:h-32'
+        />
 
-      {/* scrim: escurece as estrelas atrás da coluna de texto */}
-      <div
-        aria-hidden
-        className='pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_70%_at_30%_50%,rgba(5,6,15,0.85),rgba(5,6,15,0.4)_60%,transparent)]'
-      />
+        {/* scrim: escurece as estrelas atrás da coluna de texto */}
+        <div
+          aria-hidden
+          className='pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_70%_at_30%_50%,rgba(5,6,15,0.85),rgba(5,6,15,0.4)_60%,transparent)]'
+        />
 
-      <div className='relative flex flex-col items-center justify-center gap-4 px-4 py-24 md:py-32'>
-        {children}
+        <div className='relative flex flex-col items-center justify-center gap-4 px-4 py-24 md:py-32'>
+          {children}
+        </div>
       </div>
+
+      {/* mescla o fundo do universo (--space) com o gradiente azul do body na seção abaixo */}
+      <div
+        aria-hidden
+        className='pointer-events-none relative -z-10 -mt-px -mb-24 h-24 w-full bg-linear-to-b from-space via-space/55 to-transparent md:-mb-36 md:h-36'
+      />
     </div>
   );
 }

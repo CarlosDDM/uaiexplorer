@@ -14,11 +14,15 @@ const LAYERS: Layer[] = [
 ];
 
 const STAR_COLORS = ['#ffffff', '#cce0ff', '#ffd9b3', '#d4b8ff', '#b8ffe0'];
-const BACKGROUND = '#05060f';
+const BACKGROUND = '#05060f'; // manter em sincronia com --space em src/app/globals.css
 
 const SPRITE_SIZE = 64;
 const SPRITE_CORE_RADIUS = 6;
-const FRAME_INTERVAL = 1000 / 30;
+const BASE_FRAME_MS = 1000 / 60;
+// intervalo mínimo entre quadros: em 120/144Hz desenha 1 a cada 2 vsyncs
+// (60/72fps); 9ms fica longe dos intervalos comuns e evita cadência irregular.
+const MIN_FRAME_MS = 9;
+const REFERENCE_AREA = 1440 * 700;
 
 type Star = {
   x: number;
@@ -44,6 +48,21 @@ type Shooter = {
 
 function rand(min: number, max: number) {
   return min + Math.random() * (max - min);
+}
+
+function makeStar({ speed, size, alpha }: Layer, w: number, h: number): Star {
+  const baseAlpha = rand(...alpha);
+  return {
+    x: rand(0, w),
+    y: rand(0, h),
+    size: rand(...size),
+    speed,
+    alpha: baseAlpha,
+    baseAlpha,
+    twinkleSpeed: rand(0.005, 0.025),
+    twinklePhase: rand(0, Math.PI * 2),
+    color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
+  };
 }
 
 /**
@@ -89,7 +108,7 @@ export type Starfield = {
  * e expõe controle de ciclo de vida desacoplado do React.
  */
 export function createStarfield(canvas: HTMLCanvasElement): Starfield {
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { alpha: false });
 
   if (!ctx) {
     const noop = () => {};
@@ -105,36 +124,49 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
   const context: CanvasRenderingContext2D = ctx;
   const sprites = createStarSprites();
   const bgCanvas = document.createElement('canvas');
-  const bgCtx = bgCanvas.getContext('2d');
+  const bgCtx = bgCanvas.getContext('2d', { alpha: false });
 
   let width = 0;
   let height = 0;
-  let stars: Star[] = [];
+  let prevWidth = 0;
+  let prevHeight = 0;
+  const starsByLayer: Star[][] = LAYERS.map(() => []);
   const shooters: Shooter[] = [];
   let lastShot = 0;
   let nextShotDelay = rand(1800, 4000);
   let lastFrameTime = 0;
   let animId = 0;
 
-  function createStars() {
-    stars = [];
+  function syncStars() {
+    const density = Math.min(
+      1.15,
+      Math.max(0.35, (width * height) / REFERENCE_AREA),
+    );
+    const canRescale = prevWidth > 0 && prevHeight > 0;
 
-    for (const { count, speed, size, alpha } of LAYERS) {
-      for (let i = 0; i < count; i++) {
-        const baseAlpha = rand(...alpha);
-        stars.push({
-          x: rand(0, width),
-          y: rand(0, height),
-          size: rand(...size),
-          speed,
-          alpha: baseAlpha,
-          baseAlpha,
-          twinkleSpeed: rand(0.005, 0.025),
-          twinklePhase: rand(0, Math.PI * 2),
-          color: STAR_COLORS[Math.floor(Math.random() * STAR_COLORS.length)],
-        });
+    for (let i = 0; i < LAYERS.length; i++) {
+      const layer = LAYERS[i];
+      const targetCount = Math.max(8, Math.round(layer.count * density));
+      const bucket = starsByLayer[i];
+
+      if (canRescale) {
+        for (const s of bucket) {
+          s.x = (s.x / prevWidth) * width;
+          s.y = (s.y / prevHeight) * height;
+        }
+      }
+
+      if (bucket.length > targetCount) {
+        bucket.length = targetCount;
+      }
+
+      while (bucket.length < targetCount) {
+        bucket.push(makeStar(layer, width, height));
       }
     }
+
+    prevWidth = width;
+    prevHeight = height;
   }
 
   function renderBackground(dpr: number) {
@@ -182,7 +214,9 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
       canvas.height = 0;
       bgCanvas.width = 0;
       bgCanvas.height = 0;
-      stars = [];
+      starsByLayer.forEach(b => (b.length = 0));
+      prevWidth = 0;
+      prevHeight = 0;
       return;
     }
 
@@ -195,7 +229,7 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
     bgCanvas.height = canvas.height;
     renderBackground(dpr);
 
-    createStars();
+    syncStars();
   }
 
   function drawBackground() {
@@ -209,27 +243,29 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
   }
 
   function drawStars(step: number) {
-    for (const s of stars) {
-      if (step > 0) {
-        s.y += s.speed * step;
+    for (const bucket of starsByLayer) {
+      for (const s of bucket) {
+        if (step > 0) {
+          s.y += s.speed * step;
 
-        if (s.y > height + s.size) {
-          s.y = -s.size;
-          s.x = rand(0, width);
+          if (s.y > height + s.size) {
+            s.y = -s.size;
+            s.x = rand(0, width);
+          }
+
+          s.twinklePhase += s.twinkleSpeed * step;
+          s.alpha = s.baseAlpha * (0.6 + 0.4 * Math.sin(s.twinklePhase));
         }
 
-        s.twinklePhase += s.twinkleSpeed * step;
-        s.alpha = s.baseAlpha * (0.6 + 0.4 * Math.sin(s.twinklePhase));
+        const sprite = sprites.get(s.color);
+        if (!sprite) continue;
+
+        const drawSize = (SPRITE_SIZE / SPRITE_CORE_RADIUS) * s.size;
+        const half = drawSize / 2;
+
+        context.globalAlpha = s.alpha;
+        context.drawImage(sprite, s.x - half, s.y - half, drawSize, drawSize);
       }
-
-      const sprite = sprites.get(s.color);
-      if (!sprite) continue;
-
-      const drawSize = (SPRITE_SIZE / SPRITE_CORE_RADIUS) * s.size;
-      const half = drawSize / 2;
-
-      context.globalAlpha = s.alpha;
-      context.drawImage(sprite, s.x - half, s.y - half, drawSize, drawSize);
     }
 
     context.globalAlpha = 1;
@@ -295,15 +331,14 @@ export function createStarfield(canvas: HTMLCanvasElement): Starfield {
   }
 
   function draw(ts: number) {
-    if (lastFrameTime !== 0 && ts - lastFrameTime < FRAME_INTERVAL) {
+    if (lastFrameTime !== 0 && ts - lastFrameTime < MIN_FRAME_MS) {
       animId = requestAnimationFrame(draw);
       return;
     }
-
     const elapsed =
-      lastFrameTime === 0 ? FRAME_INTERVAL : Math.min(ts - lastFrameTime, 100);
+      lastFrameTime === 0 ? BASE_FRAME_MS : Math.min(ts - lastFrameTime, 100);
     lastFrameTime = ts;
-    const step = elapsed / (1000 / 60);
+    const step = elapsed / BASE_FRAME_MS;
 
     drawFrame(ts, step);
     animId = requestAnimationFrame(draw);
