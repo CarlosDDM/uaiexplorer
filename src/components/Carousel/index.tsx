@@ -111,7 +111,7 @@ export function Carousel({
                 aria-label={`Ir para o slide ${index + 1}`}
                 aria-current={index === selectedIndex}
                 className={clsx(
-                  'h-2 rounded-full transition-all duration-300',
+                  'h-2 rounded-full transition-[width,background-color] duration-300 motion-reduce:transition-none',
                   index === selectedIndex
                     ? 'w-6 bg-button-default'
                     : 'w-2 bg-border-card hover:bg-border-card-hover',
@@ -151,8 +151,8 @@ function CarouselButton({
       aria-label={isPrev ? 'Slide anterior' : 'Próximo slide'}
       className={clsx(
         'grid h-10 w-10 place-content-center rounded-full',
-        'border border-solid border-border-card bg-background-card/60 backdrop-blur-sm',
-        'text-button-default transition duration-300 ease-out',
+        'border border-solid border-border-card bg-background-card/85',
+        'text-button-default transition duration-300 ease-out motion-reduce:transition-none',
         'hover:border-border-card-hover hover:shadow-md hover:shadow-shadow-card-hover',
         'disabled:cursor-not-allowed disabled:opacity-40 disabled:hover:border-border-card',
         '[&>svg]:h-5 [&>svg]:w-5',

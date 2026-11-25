@@ -30,9 +30,9 @@ export function WhatsAppButton() {
           'pointer-events-none hidden md:block',
           'rounded-full border border-solid border-border-card bg-background-card/90 px-4 py-2',
           'text-sm font-medium text-indigo-50 shadow-lg backdrop-blur-md',
-          'translate-x-2 opacity-0 transition duration-300 ease-out',
-          'group-hover:translate-x-0 group-hover:opacity-100',
-          'group-focus-visible:translate-x-0 group-focus-visible:opacity-100',
+          'opacity-0 transition duration-300 ease-out motion-safe:translate-x-2 motion-reduce:transition-none',
+          'group-hover:opacity-100 motion-safe:group-hover:translate-x-0',
+          'group-focus-visible:opacity-100 motion-safe:group-focus-visible:translate-x-0',
         )}
       >
         Fale com a gente
@@ -42,9 +42,9 @@ export function WhatsAppButton() {
         className={clsx(
           'relative grid h-14 w-14 place-content-center rounded-full',
           'bg-whatsapp text-white shadow-lg shadow-whatsapp/30',
-          'transition duration-300 ease-out',
-          'group-hover:scale-105 group-hover:bg-whatsapp-hover group-hover:shadow-xl group-hover:shadow-whatsapp/40',
-          'group-active:scale-95',
+          'transition duration-300 ease-out motion-reduce:transition-none',
+          'group-hover:bg-whatsapp-hover group-hover:shadow-xl group-hover:shadow-whatsapp/40 motion-safe:group-hover:scale-105',
+          'motion-safe:group-active:scale-95',
           'group-focus-visible:ring-2 group-focus-visible:ring-whatsapp/60 group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-background',
           '[&>svg]:h-7 [&>svg]:w-7',
         )}
