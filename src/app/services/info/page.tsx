@@ -101,33 +101,37 @@ const navItems = serviceDetails.map(({ id, title }) => ({ id, title }));
 
 export default function InfoPage() {
   return (
-    <main className='mx-auto min-h-svh w-full max-w-6xl px-4 pt-32 pb-20'>
-      <GenericSection
-        className='mx-auto max-w-3xl text-center'
-        title='Entenda o que cada serviço faz por você'
-        titleAs='h1'
-        content={
-          <p className='mt-4 text-indigo-300'>
-            Um mergulho em como Desenvolvimento, Web Design e SEO se conectam
-            para transformar sua presença digital.
-          </p>
-        }
-      />
+    <main className='min-h-svh w-full pt-32 pb-20'>
+      <div className='mx-auto w-full max-w-6xl px-4'>
+        <GenericSection
+          className='mx-auto max-w-3xl text-center'
+          title='Entenda o que cada serviço faz por você'
+          titleAs='h1'
+          content={
+            <p className='mt-4 text-indigo-300'>
+              Um mergulho em como Desenvolvimento, Web Design e SEO se conectam
+              para transformar sua presença digital.
+            </p>
+          }
+        />
+      </div>
 
       <ServiceInfoNav items={navItems} />
 
-      <div className='mt-12 flex flex-col gap-16 md:mt-16 md:gap-24'>
-        {serviceDetails.map((detail, index) => (
-          <Fragment key={detail.id}>
-            {index > 0 && (
-              <hr className='h-px w-full border-0 bg-gradient-to-r from-transparent via-border-card to-transparent' />
-            )}
-            <ServiceInfoBlock {...detail} />
-          </Fragment>
-        ))}
-      </div>
+      <div className='mx-auto w-full max-w-6xl px-4'>
+        <div className='mt-12 flex flex-col gap-16 md:mt-16 md:gap-24'>
+          {serviceDetails.map((detail, index) => (
+            <Fragment key={detail.id}>
+              {index > 0 && (
+                <hr className='h-px w-full border-0 bg-gradient-to-r from-transparent via-border-card to-transparent' />
+              )}
+              <ServiceInfoBlock {...detail} />
+            </Fragment>
+          ))}
+        </div>
 
-      <ServicesInfoCta />
+        <ServicesInfoCta />
+      </div>
     </main>
   );
 }

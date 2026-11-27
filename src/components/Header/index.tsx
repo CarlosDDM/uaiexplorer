@@ -28,7 +28,7 @@ export function Header() {
           : 'border-transparent bg-transparent',
       )}
     >
-      <div className='mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-3'>
+      <div className='mx-auto flex h-16 w-full max-w-6xl items-center justify-between gap-4 px-4'>
         <Link href='/' aria-label='UAIExplorer — página inicial'>
           <Image
             src={LOGO_URL}

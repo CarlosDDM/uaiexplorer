@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 type ServiceInfoNavItem = {
   id: string;
@@ -14,6 +14,8 @@ type ServiceInfoNavProps = {
 
 export function ServiceInfoNav({ items }: ServiceInfoNavProps) {
   const [activeId, setActiveId] = useState(items[0]?.id);
+  const [isStuck, setIsStuck] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
 
   // destaca a aba da seção que está passando pelo meio da tela
   useEffect(() => {
@@ -47,41 +49,67 @@ export function ServiceInfoNav({ items }: ServiceInfoNavProps) {
     };
   }, [items]);
 
+  // detecta quando a barra encosta no Header (64px) para preencher toda a largura sem fresta
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsStuck(!entry.isIntersecting && entry.boundingClientRect.top <= 64);
+      },
+      { rootMargin: '-64px 0px 0px 0px', threshold: 0 },
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <nav
-      aria-label='Serviços nesta página'
-      className='sticky top-20 z-40 mt-12 flex justify-center'
-    >
-      <ul
+    <>
+      <div ref={sentinelRef} aria-hidden className='h-px w-full' />
+      <nav
+        aria-label='Serviços nesta página'
         className={clsx(
-          'flex max-w-full gap-1 overflow-x-auto rounded-full p-1',
-          'border border-solid border-border-card bg-background-black-default/70 shadow-lg backdrop-blur-md',
-          '[scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+          'sticky top-16 z-40 mt-10 flex w-full justify-center border-b px-4 transition-colors duration-200',
+          isStuck
+            ? 'border-border-card bg-background-black-default/95 py-2.5 shadow-md backdrop-blur-md'
+            : 'border-transparent bg-transparent py-1',
         )}
       >
-        {items.map(item => {
-          const active = item.id === activeId;
+        <ul
+          className={clsx(
+            'flex max-w-full gap-1 overflow-x-auto rounded-full p-1',
+            '[scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
+            isStuck
+              ? 'border border-solid border-border-card bg-background-card/80'
+              : 'border border-solid border-border-card bg-background-black-default/70 shadow-lg backdrop-blur-md',
+          )}
+        >
+          {items.map(item => {
+            const active = item.id === activeId;
 
-          return (
-            <li key={item.id} className='shrink-0'>
-              <a
-                href={`#${item.id}`}
-                aria-current={active ? 'location' : undefined}
-                className={clsx(
-                  'block rounded-full px-4 py-2 text-sm font-medium whitespace-nowrap',
-                  'transition duration-300 ease-out',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-button-default/60',
-                  active
-                    ? 'bg-button-default text-indigo-50 shadow-md shadow-button-default/30'
-                    : 'text-indigo-200 hover:bg-white/5 hover:text-indigo-50',
-                )}
-              >
-                {item.title}
-              </a>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+            return (
+              <li key={item.id} className='shrink-0'>
+                <a
+                  href={`#${item.id}`}
+                  aria-current={active ? 'location' : undefined}
+                  className={clsx(
+                    'block rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap sm:px-4 sm:py-2 sm:text-sm',
+                    'transition duration-300 ease-out motion-reduce:transition-none',
+                    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-button-default/60',
+                    active
+                      ? 'bg-button-default text-indigo-50 shadow-md shadow-button-default/30'
+                      : 'text-indigo-200 hover:bg-white/5 hover:text-indigo-50',
+                  )}
+                >
+                  {item.title}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </>
   );
 }
