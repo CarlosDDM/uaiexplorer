@@ -74,6 +74,21 @@ export async function submitContactForm(
       };
     }
     if (res.status === 400) {
+      try {
+        const data = (await res.json()) as {
+          message?: unknown;
+          error?: unknown;
+        };
+        const apiMessage =
+          typeof data.message === 'string' && data.message.trim()
+            ? data.message
+            : typeof data.error === 'string' && data.error.trim()
+              ? data.error
+              : null;
+        if (apiMessage) return fail(apiMessage);
+      } catch {
+        // corpo não é JSON — usa fallback genérico de 400
+      }
       return fail('Algum campo está inválido. Revise e tente de novo.');
     }
     if (res.status === 429) {

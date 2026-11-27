@@ -6,10 +6,13 @@ const FormBaseSchema = z.object({
     .string()
     .trim()
     .nonempty({ message: 'Nome não pode ser vazio' })
-    .min(3, 'O nome deve ter no minimo 3 caracteres')
+    .min(3, 'O nome deve ter no mínimo 3 caracteres')
     .max(30, 'O nome deve ter no máximo 30 caracteres'),
   email: z
-    .email({ message: 'E-mail é obrigatório' })
+    .string()
+    .trim()
+    .nonempty({ message: 'E-mail é obrigatório' })
+    .pipe(z.email({ message: 'Digite um e-mail válido' }))
     .transform(val => val.toLowerCase()),
   phone: z
     .string()
@@ -21,8 +24,8 @@ const FormBaseSchema = z.object({
     .optional(),
   message: z
     .string()
-    .min(10, 'A menssagem deve conter no minimo 10 caracteres')
-    .max(200, 'A menssagem pode ter no maximo 200 caracteres'),
+    .min(10, 'A mensagem deve conter no mínimo 10 caracteres')
+    .max(200, 'A mensagem pode ter no máximo 200 caracteres'),
 });
 
 export const InitialFormData = z.object({
