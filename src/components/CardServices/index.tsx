@@ -78,7 +78,8 @@ export function CardServices({
         href={href}
         aria-label={`${buttonDescription} sobre ${title}`}
         className={clsx(
-          'mt-auto inline-flex w-fit items-center gap-2 pt-2',
+          // py-3 + -mb-3: área de toque de 44px sem alterar o espaçamento visual
+          'mt-auto -mb-3 inline-flex w-fit items-center gap-2 py-3',
           'text-sm font-semibold text-button-default md:text-base',
           // o ::after cobre o card inteiro, então qualquer clique no card abre o link
           'after:absolute after:inset-0 after:rounded-2xl after:content-[""]',

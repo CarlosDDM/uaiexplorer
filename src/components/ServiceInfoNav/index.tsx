@@ -95,7 +95,7 @@ export function ServiceInfoNav({ items }: ServiceInfoNavProps) {
                   href={`#${item.id}`}
                   aria-current={active ? 'location' : undefined}
                   className={clsx(
-                    'block rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap sm:px-4 sm:py-2 sm:text-sm',
+                    'flex min-h-10 items-center rounded-full px-3 text-sm font-medium whitespace-nowrap sm:px-4',
                     'transition duration-300 ease-out motion-reduce:transition-none',
                     'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-button-default/60',
                     active

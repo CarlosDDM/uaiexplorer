@@ -70,3 +70,13 @@ h2,
 h3 {
   font-family: var(--font-display);
 }
+
+/* entrada do menu mobile (usada só com motion-safe) */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
