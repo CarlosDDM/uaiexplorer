@@ -6,6 +6,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Serviços',
+  description:
+    'Desenvolvimento web personalizado, Web Design focado em conversão e SEO técnico para escalar sua presença digital.',
+  alternates: {
+    canonical: '/services',
+  },
 };
 
 function ServicesHeader() {

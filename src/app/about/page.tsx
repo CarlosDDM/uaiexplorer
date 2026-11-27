@@ -11,6 +11,11 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Sobre nós',
+  description:
+    'Conheça a UAIExplorer: nossos valores, nossa abordagem técnica e as tecnologias modernas que usamos para construir sites e sistemas sob medida.',
+  alternates: {
+    canonical: '/about',
+  },
 };
 
 function AboutCta() {

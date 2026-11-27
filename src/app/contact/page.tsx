@@ -3,6 +3,11 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Contato',
+  description:
+    'Solicite um orçamento ou tire dúvidas sobre seu projeto digital pelo formulário de contato ou direto pelo WhatsApp.',
+  alternates: {
+    canonical: '/contact',
+  },
 };
 
 export default function ContactPage() {
