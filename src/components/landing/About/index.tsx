@@ -11,7 +11,7 @@ export function About({ titleAs: Title = 'h2' }: AboutProps) {
   const valuesHeading = Title === 'h1' ? 'h2' : 'h3';
 
   return (
-    <div className='mx-auto grid w-full max-w-6xl gap-12 px-4 md:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] md:items-center md:gap-16'>
+    <div className='mx-auto grid w-full max-w-6xl gap-12 px-4 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)] lg:items-center lg:gap-16'>
       <div className='text-left'>
         <Title className='text-3xl leading-tight font-bold text-balance text-indigo-50 md:text-4xl'>
           {ABOUT_TITLE}

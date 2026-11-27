@@ -104,7 +104,7 @@ export function UniverseAnimation({ children }: UniverseAnimationProps) {
           className='pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_60%_70%_at_30%_50%,rgba(5,6,15,0.85),rgba(5,6,15,0.4)_60%,transparent)]'
         />
 
-        <div className='relative flex flex-col items-center justify-center gap-4 px-4 py-24 md:py-32'>
+        <div className='relative flex flex-col items-center justify-center gap-4 px-4 py-24 md:pt-24 md:pb-32'>
           {children}
         </div>
       </div>

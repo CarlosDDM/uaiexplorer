@@ -42,8 +42,9 @@ export function Button({
     ),
     md: clsx(
       'text-base/tight',
+      'min-h-11',
       'py-2',
-      'px-4',
+      'px-5',
       'rounded-md',
       '[&_svg]:w-4',
       '[&_svg]:h-4',

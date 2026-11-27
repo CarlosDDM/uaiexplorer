@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import Image from 'next/image';
+import { IoFlashOutline, IoRocketOutline, IoTimeOutline } from 'react-icons/io5';
 import { HERO_BG_URL } from '@/utils/constants/image-constants';
 import { Container } from '../../Container';
 import { GenericSection } from '../../GenericSection';
@@ -9,6 +10,12 @@ const HERO_ACTIONS = [
   { href: '/contact', variant: 'default', label: 'Faça um orçamento' },
   // âncora na própria home: rola suavemente até a seção de serviços
   { href: '#servicos', variant: 'transparent', label: 'Veja nossos serviços' },
+] as const;
+
+const HERO_HIGHLIGHTS = [
+  { icon: IoRocketOutline, label: 'Projetos sob medida, sem template' },
+  { icon: IoTimeOutline, label: 'Resposta em até 24h' },
+  { icon: IoFlashOutline, label: 'SEO e performance desde o início' },
 ] as const;
 
 function HeroBackground() {
@@ -44,7 +51,12 @@ function HeroActions() {
   return (
     <div className='flex flex-col items-center justify-center gap-4 sm:flex-row'>
       {HERO_ACTIONS.map(({ href, variant, label }) => (
-        <LinkButton key={href} href={href} variant={variant}>
+        <LinkButton
+          key={href}
+          href={href}
+          variant={variant}
+          className='w-full max-w-xs sm:w-auto'
+        >
           {label}
         </LinkButton>
       ))}
@@ -52,10 +64,26 @@ function HeroActions() {
   );
 }
 
+function HeroHighlights() {
+  return (
+    <ul className='mx-auto mt-10 flex flex-col items-center gap-3 text-sm text-indigo-200 md:mt-12 lg:flex-row lg:justify-center lg:gap-0 lg:relative lg:left-1/2 lg:w-max lg:-translate-x-1/2'>
+      {HERO_HIGHLIGHTS.map(({ icon: Icon, label }) => (
+        <li
+          key={label}
+          className='flex items-center gap-2 lg:px-6 lg:not-first:border-l lg:not-first:border-white/15 lg:whitespace-nowrap'
+        >
+          <Icon aria-hidden className='h-4 w-4 shrink-0 text-button-default' />
+          {label}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
 export function Hero() {
   return (
     <Container>
-      <div className='relative flex min-h-svh w-full flex-col items-center justify-center'>
+      <div className='relative flex min-h-svh md:min-h-[75svh] w-full flex-col items-center justify-center'>
         <HeroBackground />
 
         <GenericSection
@@ -71,6 +99,7 @@ export function Hero() {
           className='mx-auto w-full max-w-150 text-center md:max-w-200'
         >
           <HeroActions />
+          <HeroHighlights />
         </GenericSection>
       </div>
     </Container>

@@ -1,6 +1,8 @@
 'use client';
 import clsx from 'clsx';
 import Link from 'next/link';
+import { createPortal } from 'react-dom';
+import { LinkButton } from '../Link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { GiHamburgerMenu } from 'react-icons/gi';
@@ -30,6 +32,16 @@ export function HeaderMenu() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // Escape fecha o menu
+  useEffect(() => {
+    if (!isMenuOpen) return;
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') setIsMenuOpen(false);
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isMenuOpen]);
 
   // fecha o menu ao navegar para outra rota
   useEffect(() => {
@@ -64,29 +76,46 @@ export function HeaderMenu() {
         })}
       </ul>
 
+      <LinkButton href='/contact' className='ml-8 hidden md:flex'>
+        Orçamento
+      </LinkButton>
+
       <button
         type='button'
         aria-expanded={isMenuOpen}
         aria-controls='mobile-menu'
         onClick={toggleMenu}
         className={clsx(
-          'flex cursor-pointer items-center gap-2 text-indigo-50 md:hidden',
+          // min-h/min-w ampliam a área de toque; -mr compensa o padding sem mudar o visual
+          'flex min-h-11 min-w-11 cursor-pointer items-center justify-end gap-2 text-indigo-50 md:hidden',
+          '-mr-2 pr-2',
           'transition duration-300 hover:text-indigo-300',
         )}
       >
         Menu
         {isMenuOpen ? (
-          <IoMdClose size={24} aria-label='Fechar menu' />
+          <IoMdClose size={24} aria-hidden />
         ) : (
-          <GiHamburgerMenu size={24} aria-label='Abrir menu' />
+          <GiHamburgerMenu size={24} aria-hidden />
         )}
       </button>
+
+      {isMenuOpen &&
+        // portal: o header tem backdrop-blur e viraria o referencial do fixed
+        createPortal(
+          <div
+            aria-hidden
+            onClick={() => setIsMenuOpen(false)}
+            className='fixed inset-x-0 top-16 bottom-0 z-90 bg-black/50 md:hidden motion-safe:animate-[fade-in_200ms_ease-out]'
+          />,
+          document.body,
+        )}
 
       {isMenuOpen && (
         <ul
           id='mobile-menu'
           className={clsx(
-            'absolute right-0 top-11 z-50 w-48 md:hidden',
+            'absolute right-0 top-13 z-50 w-56 md:hidden motion-safe:animate-[fade-in_200ms_ease-out]',
             'flex flex-col gap-1 rounded-xl p-2',
             'border border-solid border-border-card bg-background-card/95 backdrop-blur-md',
             'shadow-lg shadow-border-card',
@@ -102,7 +131,7 @@ export function HeaderMenu() {
                   aria-current={active ? 'page' : undefined}
                   onClick={toggleMenu}
                   className={clsx(
-                    'block rounded-lg px-3 py-2 text-sm transition duration-300',
+                    'flex min-h-11 items-center rounded-lg px-3 text-base transition duration-300',
                     active
                       ? 'bg-button-default/15 text-indigo-50'
                       : 'text-indigo-200 hover:bg-white/5 hover:text-indigo-50',
@@ -113,6 +142,15 @@ export function HeaderMenu() {
               </li>
             );
           })}
+          <li className='mt-1'>
+            <LinkButton
+              href='/contact'
+              onClick={toggleMenu}
+              className='w-full max-w-none'
+            >
+              Orçamento
+            </LinkButton>
+          </li>
         </ul>
       )}
     </nav>
