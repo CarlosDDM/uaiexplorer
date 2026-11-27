@@ -5,7 +5,6 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ToastifyContainer } from '@/ToastifyContainer';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
-import { HERO_BG_URL } from '@/utils/constants/image-constants';
 import { SITE_NAME, SITE_URL } from '@/utils/constants/site-constants';
 
 const bricolage = Bricolage_Grotesque({
@@ -40,20 +39,11 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
-    images: [
-      {
-        url: HERO_BG_URL,
-        width: 1200,
-        height: 630,
-        alt: 'UAIExplorer — Desenvolvimento Web, Design e SEO',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: SITE_NAME,
     description: SITE_DESCRIPTION,
-    images: [HERO_BG_URL],
   },
 };
 

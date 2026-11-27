@@ -1,4 +1,9 @@
+import type { Metadata } from 'next';
 import { LinkButton } from '@/components/Link';
+
+export const metadata: Metadata = {
+  title: 'Página não encontrada',
+};
 
 export default function NotFound() {
   return (
