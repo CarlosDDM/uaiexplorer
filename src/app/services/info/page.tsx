@@ -13,6 +13,11 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Detalhes dos serviços',
+  description:
+    'Entenda em detalhes como Desenvolvimento Web sob medida, Web Design e SEO atuam juntos para gerar autonomia, performance e tráfego orgânico.',
+  alternates: {
+    canonical: '/services/info',
+  },
 };
 
 function ServiceFeatureItem({ title, content }: ServiceFeature) {
