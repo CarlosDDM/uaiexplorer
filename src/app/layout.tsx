@@ -5,6 +5,7 @@ import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { ToastifyContainer } from '@/ToastifyContainer';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
+import { CookieConsent } from '@/components/CookieConsent';
 import { SITE_NAME, SITE_URL } from '@/utils/constants/site-constants';
 
 const bricolage = Bricolage_Grotesque({
@@ -64,6 +65,7 @@ export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
         <Footer />
         <WhatsAppButton />
         <ToastifyContainer />
+        <CookieConsent />
       </body>
     </html>
   );
