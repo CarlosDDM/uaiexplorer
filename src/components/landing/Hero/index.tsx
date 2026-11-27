@@ -83,7 +83,7 @@ function HeroHighlights() {
 export function Hero() {
   return (
     <Container>
-      <div className='relative flex min-h-svh md:min-h-[75svh] w-full flex-col items-center justify-center'>
+      <div className='relative flex min-h-svh w-full flex-col items-center justify-center'>
         <HeroBackground />
 
         <GenericSection
