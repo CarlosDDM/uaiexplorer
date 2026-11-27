@@ -1,4 +1,4 @@
-import { techGroups } from '@/utils/constants/tech-stack-constatns';
+import { techGroups } from '@/utils/constants/tech-stack-constants';
 import { TechStackItem } from '../TechStackItem';
 
 export function TechStack() {
