@@ -1,0 +1,28 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        # NEXT_PUBLIC_* são embutidas no BUILD (não em runtime): defina no .env ou no shell
+        NEXT_PUBLIC_MAIL_API_URL: ${NEXT_PUBLIC_MAIL_API_URL:-http://localhost:3100}
+        NEXT_PUBLIC_CONTACT_FORM_SLUG: ${NEXT_PUBLIC_CONTACT_FORM_SLUG:-uaiexplorer-contato}
+    image: uaiexplorer:latest
+    container_name: uaiexplorer
+    restart: unless-stopped
+    ports:
+      # PORT muda só a porta publicada no host; dentro do container é sempre 3000
+      - '${PORT:-3000}:3000'
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: '1'
+      HOSTNAME: 0.0.0.0
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

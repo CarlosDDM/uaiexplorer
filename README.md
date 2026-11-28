@@ -20,6 +20,18 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Docker
+
+Com o `.env` preenchido (veja `.env.example`; as variáveis `NEXT_PUBLIC_*` são embutidas no **build**):
+
+```bash
+docker compose up -d --build   # builda e sobe em http://localhost:3000
+docker compose logs -f         # acompanha os logs
+docker compose down            # derruba o container
+```
+
+`PORT` no `.env` muda só a porta publicada no host; dentro do container é sempre `3000`.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
